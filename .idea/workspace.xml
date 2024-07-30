@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9dcb5fd7-3ec4-42c2-a968-908c83017f36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/global/common/BaseResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/global/exception/ErrorCode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,9 +37,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2jwpBSpsa05ieQcDGzpO1Y6sxPK" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
@@ -54,7 +53,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.MoyeoApplication.executor": "Run",
-    "git-widget-placeholder": "feat/#9/baseResponse",
+    "git-widget-placeholder": "feat/#11/errorHandler",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/kyungsoolee/GitRepositories/Spring/Moyeo-Server/build.gradle",
     "node.js.detected.package.eslint": "true",
@@ -72,7 +71,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1722307857886</updated>
-      <workItem from="1722307858946" duration="426000" />
+      <workItem from="1722307858946" duration="702000" />
     </task>
     <servers />
   </component>
