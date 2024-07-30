@@ -77,6 +77,9 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/moyeo_server:latest
             sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d
+            echo "Before stopping container"
+            echo ${{env.CURRENT_UPSTREAM}}
+            sudo docker ps -a
       
       - name: Check deploy server URL
         uses: jtalk/url-health-check-action@v3
