@@ -40,6 +40,9 @@ dependencies {
 	// postgresql
 	runtimeOnly 'org.postgresql:postgresql'
 
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 tasks.named('test') {
