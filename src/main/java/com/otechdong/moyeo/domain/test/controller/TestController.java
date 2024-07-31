@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.test;
+package com.otechdong.moyeo.domain.test.controller;
 
 import com.otechdong.moyeo.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
