@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9dcb5fd7-3ec4-42c2-a968-908c83017f36" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/controller/JoinController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/controller/MemberController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/dto/MemberRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/dto/MemberResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/entity/Member.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/entity/SocialType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/mapper/MemberMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/repository/MemberRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/service/MemberService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/otechdong/moyeo/domain/member/service/MemberServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,9 +47,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="Enum" />
         <option value="Dockerfile" />
+        <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -69,7 +77,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.MoyeoApplication.executor": "Run",
-    "git-widget-placeholder": "chore/#19/linkDatabase",
+    "git-widget-placeholder": "feat/#21/jwtToken",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/kyungsoolee/GitRepositories/Spring/Moyeo-Server/build.gradle",
     "node.js.detected.package.eslint": "true",
