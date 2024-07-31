@@ -11,10 +11,8 @@ public class MemberRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberSignIn {
+    public static class MemberAppleSignIn {
         private String encryptedUserIdentifier;
-        private String fullName;
-        private String email;
     }
 
 

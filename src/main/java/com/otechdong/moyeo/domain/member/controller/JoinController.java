@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class JoinController {
 
     @PostMapping("/sign-up")
-    public BaseResponse<MemberRequest.MemberSignIn> signUp(
-            MemberRequest.MemberSignIn request,
+    public BaseResponse<MemberRequest.MemberAppleSignIn> signUp(
+            MemberRequest.MemberAppleSignIn request,
             @RequestParam SocialType socialType
     ) {
         return BaseResponse.onSuccess(null);

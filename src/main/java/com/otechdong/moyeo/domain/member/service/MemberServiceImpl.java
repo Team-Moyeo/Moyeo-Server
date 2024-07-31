@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponse.MemberSignIn signIn(
-            MemberRequest.MemberSignIn request,
+            MemberRequest.MemberAppleSignIn request,
             SocialType socialType) {
         Optional<Member> optionalMember = memberRepository.findByClientId(request.getEncryptedUserIdentifier());
 
