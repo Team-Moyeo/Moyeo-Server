@@ -5,14 +5,18 @@ import com.otechdong.moyeo.domain.config.jwt.service.JwtUtil;
 import com.otechdong.moyeo.domain.member.dto.MemberRequest;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
+import com.otechdong.moyeo.domain.member.entity.PermissionRole;
+import com.otechdong.moyeo.domain.member.entity.RefreshToken;
 import com.otechdong.moyeo.domain.member.entity.SocialType;
 import com.otechdong.moyeo.domain.member.mapper.MemberMapper;
 import com.otechdong.moyeo.domain.member.mapper.AuthenticationMapper;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
+import com.otechdong.moyeo.domain.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.SecretKey;
 import java.util.Optional;
 
 @Service
@@ -24,6 +28,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
     private final JwtUtil jwtUtil;
     private final AuthenticationMapper authenticationMapper;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private SecretKey secretKey;
 
     @Override
     public MemberResponse.MemberSignIn signIn(MemberRequest.MemberSignIn request) {
@@ -45,9 +51,26 @@ public class MemberServiceImpl implements MemberService {
         // 2. 해당 유저가 존재한다면 : Member 객체를 DB에서 불러오고, MemberSignIn response 반환
         // TODO: 토큰 유효 시간을 검사해서 accessToken 또는 refreshToken의 유효 기간이 만료되었을 때, 만료된 토큰을 각각 재발급해주는 로직 구현
         boolean isServiced = optionalMember.get().getName() != null;
-        return generateNewToken(optionalMember.get(), isServiced);
+
+        Member member = optionalMember.get();
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(optionalMember.get().getId());
+        String refreshToken = optionalRefreshToken.get().getRefreshToken();
+        String accessToken = optionalRefreshToken.get().getAccessToken();
+
+        if (jwtUtil.isExpired(accessToken)) {
+            if (jwtUtil.isExpired(refreshToken)) {
+                return generateNewToken(member, isServiced);
+            }
+            String newAccessToken = jwtUtil.createAccessToken(member.getId(), member.getClientId(), member.getPermissionRole());
+            TokenInfo tokenInfo = authenticationMapper.toTokenInfo(newAccessToken, refreshToken);
+            return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
+        }
+
+        TokenInfo tokenInfo = authenticationMapper.toTokenInfo(accessToken, refreshToken);
+        return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
     }
 
+    //
     private MemberResponse.MemberSignIn saveNewMember(String clientId, SocialType socialType) {
         Member member = memberMapper.toMember(clientId, socialType);
         Member newMember = memberRepository.save(member);
@@ -56,20 +79,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private MemberResponse.MemberSignIn generateNewToken(Member member, Boolean isServiced) {
-        // TODO: Jwt 토큰 발급 구현
         Long memberId = member.getId();
         String clientId = member.getClientId();
-        String permissionRole = member.getPermissionRole().getToKrean();
+        PermissionRole permissionRole = member.getPermissionRole();
 
-        String accessToken = jwtUtil.createJwt(memberId, clientId, permissionRole, "access");
-        String refreshToken = jwtUtil.createJwt(memberId, clientId, permissionRole, "refresh");
-        TokenInfo tokenInfo = authenticationMapper.toTokenInfo(accessToken, refreshToken);
+        MemberResponse.MemberTokens memberTokens = jwtUtil.refreshTokens(memberId, clientId, permissionRole);
+
+        TokenInfo tokenInfo = authenticationMapper.toTokenInfo(memberTokens.getAccessToken(), memberTokens.getRefreshToken());
 
         // log
-        System.out.println(jwtUtil.getMemberId(accessToken));
-        System.out.println(jwtUtil.getClientId(accessToken));
-        System.out.println(jwtUtil.getTokenType(accessToken));
-        System.out.println(jwtUtil.getPermissionRole(accessToken));
+        System.out.println(jwtUtil.getMemberId(memberTokens.getAccessToken()));
+        System.out.println(jwtUtil.getClientId(memberTokens.getAccessToken()));
+        System.out.println(jwtUtil.getTokenType(memberTokens.getAccessToken()));
+        System.out.println(jwtUtil.getPermissionRole(memberTokens.getAccessToken()));
 
         return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
     }

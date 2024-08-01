@@ -5,7 +5,9 @@ import com.otechdong.moyeo.domain.config.security.CustomUserDetails;
 import com.otechdong.moyeo.domain.config.security.service.JpaUserDetailService;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.PermissionRole;
+import com.otechdong.moyeo.domain.member.entity.RefreshToken;
 import com.otechdong.moyeo.domain.member.mapper.AuthenticationMapper;
+import com.otechdong.moyeo.domain.member.repository.RefreshTokenRepository;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.AuthErrorCode;
 import io.jsonwebtoken.*;
@@ -27,6 +29,7 @@ public class JwtUtilImpl implements JwtUtil {
     private final JwtProperties jwtProperties;
     private final AuthenticationMapper authenticationMapper;
     private final JpaUserDetailService userDetailService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @PostConstruct
     protected void init() {
@@ -34,21 +37,15 @@ public class JwtUtilImpl implements JwtUtil {
     }
 
 
-    //토큰 발급
-
+    // 엑세스 토큰 발급
     @Override
-    public String createJwt(Long memberId, String clientId, String permissionRole, String tokenType) {
-        Long expiredTime = 0L;
-        if (tokenType == "refresh") {
-            expiredTime = jwtProperties.getRefresh_expired_time();
-        } else if (tokenType == "access") {
-            expiredTime = jwtProperties.getAccess_expired_time();
-        } else {
+    public String createAccessToken(Long memberId, String clientId, PermissionRole permissionRole) {
+        Long expiredTime = jwtProperties.getAccess_expired_time();
+        if (expiredTime == null) {
             throw new RestApiException(AuthErrorCode.INVALID_TOKEN_TYPE);
         }
         return Jwts.builder()
                 .claim("memberId", memberId)
-                .claim("tokenType", tokenType)
                 .claim("clientId", clientId)
                 .claim("permissionRole", permissionRole)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -57,27 +54,19 @@ public class JwtUtilImpl implements JwtUtil {
                 .compact();
     }
 
+    // 리프래쉬 토큰 발급
     @Override
-    public String createRefreshToken(SecretKey secretKey) {
-        Claims claims = (Claims) Jwts
-                .claims();
+    public String createRefreshToken() {
+        Claims claims = Jwts.claims().build();
+        Long expiredTime = jwtProperties.getRefresh_expired_time();
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 14))//유효시간 (3일)
+                .setExpiration(new Date(System.currentTimeMillis() + expiredTime))//유효시간 (3일)
                 .signWith(SignatureAlgorithm.HS256, secretKey) //HS256알고리즘으로 key를 암호화 해줄것이다.
                 .compact();
     }
-
-//    @Override
-//    public String createJwtFromEncryptedUserIdentifier(String encryptedUserIdentifier) {
-//        SecretKey encryptedUserIdentifierSecretKey = new SecretKeySpec((jwtProperties.getJwt_secret()+encryptedUserIdentifier).getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS512.key().build().getAlgorithm());
-//        return Jwts.builder()
-//                .setAudience("capple")
-//                .signWith(SignatureAlgorithm.HS512, encryptedUserIdentifierSecretKey)
-//                .compact();
-//    }
 
     // 토큰 유효성 검사
     @Override
@@ -98,11 +87,14 @@ public class JwtUtilImpl implements JwtUtil {
         }
     }
 
-    // 토큰 재발급
+    // 토큰 두 개 모두 재발급
     @Override
     public MemberResponse.MemberTokens refreshTokens(Long memberId, String clientId, PermissionRole permissionRole) {
-        String accessToken = createJwt(memberId, clientId, permissionRole.getToKrean(), "access");
-        String refreshToken = createRefreshToken(secretKey);
+        String accessToken = createAccessToken(memberId, clientId, permissionRole);
+        String refreshToken = createRefreshToken();
+
+        // 레디스에 refreshToken을 저장. (사용자 기본키 ID, refreshToken, accessToken 저장)
+        refreshTokenRepository.save(new RefreshToken(memberId, refreshToken, accessToken));
         return authenticationMapper.toMemberTokens(accessToken, refreshToken);
     }
 
@@ -134,7 +126,14 @@ public class JwtUtilImpl implements JwtUtil {
 
     @Override
     public Boolean isExpired(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+            return false;
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (JwtException e) {
+            throw new RestApiException(AuthErrorCode.INVALID_TOKEN); // 유효하지 않은 경우
+        }
     }
 
 }

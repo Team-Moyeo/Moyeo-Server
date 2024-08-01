@@ -20,6 +20,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 //        토큰 추출
         String authorization = request.getHeader("Authorization");
+        String refreshToken = request.getHeader("Refresh-Token");
 //        토큰 유형 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -27,20 +28,20 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
 //        토큰 분리
-        String token = authorization.split(" ")[1];
+        String accessToken = authorization.split(" ")[1];
 //        토큰 만료 여부 확인
-        if (jwtUtil.isExpired(token)) {
+        if (jwtUtil.isExpired(accessToken)) {
             filterChain.doFilter(request, response);
             return;
         }
 //        토큰에서 tokenType 추출
-        String tokenType = jwtUtil.getTokenType(token);
+        String tokenType = jwtUtil.getTokenType(accessToken);
         if (tokenType == null) {
             filterChain.doFilter(request, response);
             return;
         }
         // JWT 토큰에서 인증 정보를 추출해 Authentication(인증) 객체를 생성
-        Authentication authentication = jwtUtil.getAuthentication(token);
+        Authentication authentication = jwtUtil.getAuthentication(accessToken);
         // Spring Security의 SecurityContextHolder에 설정해 인증된 사용자로 만듦
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

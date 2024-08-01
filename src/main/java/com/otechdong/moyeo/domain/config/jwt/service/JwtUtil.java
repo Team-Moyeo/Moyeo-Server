@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import javax.crypto.SecretKey;
 
 public interface JwtUtil {
-    String createJwt(Long memberId, String clientId, String role, String tokenType);
+    String createAccessToken(Long memberId, String clientId, PermissionRole permissionRole);
 //    String createJwtFromEncryptedUserIdentifier(String encryptedUserIdentifier);
     Boolean checkJwt(String token);
     MemberResponse.MemberTokens refreshTokens(Long memberId, String clientId, PermissionRole permissionRole);
@@ -17,5 +17,5 @@ public interface JwtUtil {
     String getPermissionRole(String token);
     String getTokenType(String token);
     Boolean isExpired(String token);
-    String createRefreshToken(SecretKey secretKey);
+    String createRefreshToken();
 }
