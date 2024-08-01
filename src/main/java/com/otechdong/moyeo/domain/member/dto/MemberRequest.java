@@ -1,5 +1,6 @@
 package com.otechdong.moyeo.domain.member.dto;
 
+import com.otechdong.moyeo.domain.member.entity.SocialType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class MemberRequest {
     @NoArgsConstructor
     public static class MemberAppleSignIn {
         private String encryptedUserIdentifier;
+        private SocialType socialType;
     }
 
 

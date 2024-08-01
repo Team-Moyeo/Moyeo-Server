@@ -32,6 +32,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private String email;
+//    @Column(nullable = false)
+//    private String email;
 }

@@ -27,11 +27,11 @@ public class SecurityConfig {
         http
                 .csrf((auth) -> auth.disable());
 
-        // From 로그인 방식 disable
+        // From 로그인 방식 disable (UsernamePasswordAuthenticationFilter 비활성화)
         http
                 .formLogin((auth) -> auth.disable());
 
-        // http basic 인증 방식 disable
+        // http basic 인증 방식 disable (BasicAuthenticationFilter 비활성화)
         http
                 .httpBasic((auth) -> auth.disable());
 
