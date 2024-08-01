@@ -24,6 +24,14 @@ public class Member extends BaseEntity {
     private SocialType socialType;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PermissionRole permissionRole;
+
+    @Column(nullable = false)
     private String name;
 
     @Column
