@@ -43,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
             return saveNewMember(clientId, socialType);
         }
         // 2. 해당 유저가 존재한다면 : Member 객체를 DB에서 불러오고, MemberSignIn response 반환
+        // TODO: 토큰 유효 시간을 검사해서 accessToken 또는 refreshToken의 유효 기간이 만료되었을 때, 만료된 토큰을 각각 재발급해주는 로직 구현
         boolean isServiced = optionalMember.get().getName() != null;
         return generateNewToken(optionalMember.get(), isServiced);
     }
