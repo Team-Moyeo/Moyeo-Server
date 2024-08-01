@@ -12,10 +12,8 @@ public class MemberRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberAppleSignIn {
+    public static class MemberSignIn {
         private String encryptedUserIdentifier;
         private SocialType socialType;
     }
-
-
 }

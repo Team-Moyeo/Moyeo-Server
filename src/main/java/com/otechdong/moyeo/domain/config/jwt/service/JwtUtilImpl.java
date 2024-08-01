@@ -1,14 +1,18 @@
 package com.otechdong.moyeo.domain.config.jwt.service;
 
 import com.otechdong.moyeo.domain.config.jwt.dto.JwtProperties;
+import com.otechdong.moyeo.domain.config.security.CustomUserDetails;
+import com.otechdong.moyeo.domain.config.security.service.JpaUserDetailService;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.PermissionRole;
-import com.otechdong.moyeo.domain.member.mapper.TokenMapper;
+import com.otechdong.moyeo.domain.member.mapper.AuthenticationMapper;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.AuthErrorCode;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -18,10 +22,11 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtServiceImpl implements JwtService {
+public class JwtUtilImpl implements JwtUtil {
     private SecretKey secretKey;
     private final JwtProperties jwtProperties;
-    private final TokenMapper tokenMapper;
+    private final AuthenticationMapper authenticationMapper;
+    private final JpaUserDetailService userDetailService;
 
     @PostConstruct
     protected void init() {
@@ -32,7 +37,7 @@ public class JwtServiceImpl implements JwtService {
     //토큰 발급
 
     @Override
-    public String createJwt(Long memberId, String permissionRole, String tokenType) {
+    public String createJwt(Long memberId, String clientId, String permissionRole, String tokenType) {
         Long expiredTime = 0L;
         if (tokenType == "refresh") {
             expiredTime = jwtProperties.getRefresh_expired_time();
@@ -42,10 +47,11 @@ public class JwtServiceImpl implements JwtService {
             throw new RestApiException(AuthErrorCode.INVALID_TOKEN_TYPE);
         }
         return Jwts.builder()
-                .claim("tokenType", tokenType)
                 .claim("memberId", memberId)
+                .claim("tokenType", tokenType)
+                .claim("clientId", clientId)
                 .claim("permissionRole", permissionRole)
-                .issuedAt(new Date(System.currentTimeMillis()))
+                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredTime))
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
@@ -81,10 +87,41 @@ public class JwtServiceImpl implements JwtService {
 
     // 토큰 재발급
     @Override
-    public MemberResponse.MemberTokens refreshTokens(Long memberId, PermissionRole permissionRole) {
-        String accessToken = createJwt(memberId, permissionRole.getToKrean(), "access");
-        String refreshToken = createJwt(memberId, permissionRole.getToKrean(), "refresh");
-        return tokenMapper.toTokens(accessToken, refreshToken);
+    public MemberResponse.MemberTokens refreshTokens(Long memberId, String clientId, PermissionRole permissionRole) {
+        String accessToken = createJwt(memberId, clientId, permissionRole.getToKrean(), "access");
+        String refreshToken = createJwt(memberId, clientId, permissionRole.getToKrean(), "refresh");
+        return authenticationMapper.toMemberTokens(accessToken, refreshToken);
+    }
+
+    @Override
+    public Authentication getAuthentication(String token) {
+        CustomUserDetails userDetails = userDetailService.loadUserByUsername(getClientId(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    @Override
+    public Long getMemberId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("memberId", Long.class);
+    }
+
+    @Override
+    public String getClientId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("clientId", String.class);
+    }
+
+    @Override
+    public String getPermissionRole(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("permissionRole", String.class);
+    }
+
+    @Override
+    public String getTokenType(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("tokenType", String.class);
+    }
+
+    @Override
+    public Boolean isExpired(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
 }
