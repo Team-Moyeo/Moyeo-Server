@@ -25,10 +25,6 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private PermissionRole permissionRole;
 
     @Column(nullable = false)

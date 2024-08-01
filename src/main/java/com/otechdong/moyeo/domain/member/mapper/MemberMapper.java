@@ -14,12 +14,11 @@ public class MemberMapper {
     public Member toMember(final String clientId, SocialType socialType) {
         return Member.builder()
                 .clientId(clientId)
-                .name("이경수")
+                .name("")
                 .socialType(socialType)
-                .role(Role.OWNER)
                 .permissionRole(PermissionRole.ADMIN)
-                .avatar("https://nasadf")
-                .phoneNumber("010-9196-7601")
+                .avatar("")
+                .phoneNumber("")
                 .build();
     }
 
