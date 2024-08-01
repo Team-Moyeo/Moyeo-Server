@@ -39,9 +39,9 @@ public class MemberServiceImpl implements MemberService {
 
         Optional<Member> optionalMember = memberRepository.findByClientId(clientId);
 
-        System.out.println(optionalMember);
-        System.out.println(clientId);
-        System.out.println(socialType);
+        System.out.println("OptionalMember : " + optionalMember);
+        System.out.println("ClientId : " + clientId);
+        System.out.println("SocialType : " + socialType);
 
         // 1. 해당 유저가 존재하지 않으면 : Member 객체 생성하고 DB에 저장 -> 회원가입
         if (optionalMember.isEmpty()) {
@@ -63,6 +63,9 @@ public class MemberServiceImpl implements MemberService {
             }
             String newAccessToken = jwtUtil.createAccessToken(member.getId(), member.getClientId(), member.getPermissionRole());
             TokenInfo tokenInfo = authenticationMapper.toTokenInfo(newAccessToken, refreshToken);
+
+
+            refreshTokenRepository.save(new RefreshToken(member.getId(), refreshToken, newAccessToken));
             return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
         }
 
@@ -88,10 +91,10 @@ public class MemberServiceImpl implements MemberService {
         TokenInfo tokenInfo = authenticationMapper.toTokenInfo(memberTokens.getAccessToken(), memberTokens.getRefreshToken());
 
         // log
-        System.out.println(jwtUtil.getMemberId(memberTokens.getAccessToken()));
-        System.out.println(jwtUtil.getClientId(memberTokens.getAccessToken()));
-        System.out.println(jwtUtil.getTokenType(memberTokens.getAccessToken()));
-        System.out.println(jwtUtil.getPermissionRole(memberTokens.getAccessToken()));
+        System.out.println("MemberId : " + jwtUtil.getMemberId(memberTokens.getAccessToken()));
+        System.out.println("ClientId : " + jwtUtil.getClientId(memberTokens.getAccessToken()));
+        System.out.println("TokenType : " + jwtUtil.getTokenType(memberTokens.getAccessToken()));
+        System.out.println("PermissionRole : " + jwtUtil.getPermissionRole(memberTokens.getAccessToken()));
 
         return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
     }
