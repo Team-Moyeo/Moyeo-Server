@@ -1,10 +1,12 @@
 package com.otechdong.moyeo.domain.config.jwt.service;
 
 import com.otechdong.moyeo.domain.config.jwt.dto.JwtProperties;
+import com.otechdong.moyeo.domain.member.dto.MemberResponse;
+import com.otechdong.moyeo.domain.member.entity.PermissionRole;
+import com.otechdong.moyeo.domain.member.mapper.TokenMapper;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.AuthErrorCode;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,13 +20,16 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
     private SecretKey secretKey;
-    private JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
+    private final TokenMapper tokenMapper;
 
     @PostConstruct
     protected void init() {
         secretKey = new SecretKeySpec(jwtProperties.getJwt_secret().getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS512.key().build().getAlgorithm());
     }
 
+
+    //토큰 발급
 
     @Override
     public String createJwt(Long memberId, String permissionRole, String tokenType) {
@@ -46,13 +51,40 @@ public class JwtServiceImpl implements JwtService {
                 .compact();
     }
 
+//    @Override
+//    public String createJwtFromEncryptedUserIdentifier(String encryptedUserIdentifier) {
+//        SecretKey encryptedUserIdentifierSecretKey = new SecretKeySpec((jwtProperties.getJwt_secret()+encryptedUserIdentifier).getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS512.key().build().getAlgorithm());
+//        return Jwts.builder()
+//                .setAudience("capple")
+//                .signWith(SignatureAlgorithm.HS512, encryptedUserIdentifierSecretKey)
+//                .compact();
+//    }
+
+    // 토큰 유효성 검사
     @Override
-    public String createJwtFromEncryptedUserIdentifier(String encryptedUserIdentifier) {
-        SecretKey encryptedUserIdentifierSecretKey = new SecretKeySpec((jwtProperties.getJwt_secret()+encryptedUserIdentifier).getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS512.key().build().getAlgorithm());
-        return Jwts.builder()
-                .setAudience("capple")
-                .signWith(SignatureAlgorithm.HS512, encryptedUserIdentifierSecretKey)
-                .compact();
+    public Boolean checkJwt(String token) { //TODO 토큰 유효성 검증 로직 수정 필요
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new RestApiException(AuthErrorCode.INVALID_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new RestApiException(AuthErrorCode.EXPIRED_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            throw new RestApiException(AuthErrorCode.UNSUPPORTED_TOKEN);
+        } catch (SignatureException e) {
+            throw new RestApiException(AuthErrorCode.WRONG_TOKEN_SIGNITURE);
+        } catch (IllegalArgumentException e) {
+            throw new RestApiException(AuthErrorCode.EMPTY_TOKEN);
+        }
+    }
+
+    // 토큰 재발급
+    @Override
+    public MemberResponse.MemberTokens refreshTokens(Long memberId, PermissionRole permissionRole) {
+        String accessToken = createJwt(memberId, permissionRole.getToKrean(), "access");
+        String refreshToken = createJwt(memberId, permissionRole.getToKrean(), "refresh");
+        return tokenMapper.toTokens(accessToken, refreshToken);
     }
 
 }
