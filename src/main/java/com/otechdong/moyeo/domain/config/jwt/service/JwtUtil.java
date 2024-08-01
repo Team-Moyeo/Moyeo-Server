@@ -4,6 +4,8 @@ import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.PermissionRole;
 import org.springframework.security.core.Authentication;
 
+import javax.crypto.SecretKey;
+
 public interface JwtUtil {
     String createJwt(Long memberId, String clientId, String role, String tokenType);
 //    String createJwtFromEncryptedUserIdentifier(String encryptedUserIdentifier);
@@ -15,4 +17,5 @@ public interface JwtUtil {
     String getPermissionRole(String token);
     String getTokenType(String token);
     Boolean isExpired(String token);
+    String createRefreshToken(SecretKey secretKey);
 }

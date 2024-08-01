@@ -51,9 +51,22 @@ public class JwtUtilImpl implements JwtUtil {
                 .claim("tokenType", tokenType)
                 .claim("clientId", clientId)
                 .claim("permissionRole", permissionRole)
-                 .issuedAt(new Date(System.currentTimeMillis()))
+                .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredTime))
                 .signWith(SignatureAlgorithm.HS512, secretKey)
+                .compact();
+    }
+
+    @Override
+    public String createRefreshToken(SecretKey secretKey) {
+        Claims claims = (Claims) Jwts
+                .claims();
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 14))//유효시간 (3일)
+                .signWith(SignatureAlgorithm.HS256, secretKey) //HS256알고리즘으로 key를 암호화 해줄것이다.
                 .compact();
     }
 
@@ -89,7 +102,7 @@ public class JwtUtilImpl implements JwtUtil {
     @Override
     public MemberResponse.MemberTokens refreshTokens(Long memberId, String clientId, PermissionRole permissionRole) {
         String accessToken = createJwt(memberId, clientId, permissionRole.getToKrean(), "access");
-        String refreshToken = createJwt(memberId, clientId, permissionRole.getToKrean(), "refresh");
+        String refreshToken = createRefreshToken(secretKey);
         return authenticationMapper.toMemberTokens(accessToken, refreshToken);
     }
 
