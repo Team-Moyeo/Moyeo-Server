@@ -45,6 +45,7 @@ public class JwtUtilImpl implements JwtUtil {
             throw new RestApiException(AuthErrorCode.INVALID_TOKEN_TYPE);
         }
         return Jwts.builder()
+                .claim("tokenType", "access")
                 .claim("memberId", memberId)
                 .claim("clientId", clientId)
                 .claim("permissionRole", permissionRole)
@@ -100,7 +101,7 @@ public class JwtUtilImpl implements JwtUtil {
 
     @Override
     public Authentication getAuthentication(String token) {
-        CustomUserDetails userDetails = userDetailService.loadUserByUsername(getClientId(token));
+        CustomUserDetails userDetails = userDetailService.loadUserByUsername(Long.toString(getMemberId(token)));
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
