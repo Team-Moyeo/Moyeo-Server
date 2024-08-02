@@ -16,7 +16,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String clientId;
 
     @Column(nullable = false)
