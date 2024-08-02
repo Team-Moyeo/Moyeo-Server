@@ -1,5 +1,7 @@
 package com.otechdong.moyeo.domain.test.controller;
 
+import com.otechdong.moyeo.domain.config.AuthenticationMember;
+import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +51,14 @@ public class TestController {
         Map<String, String> responseData = new HashMap<>();
 
         return env;
+    }
+
+    @GetMapping("/test")
+    private String getClientId(
+            @AuthenticationMember Member member
+    ) {
+        System.out.println(member);
+        return "Good";
     }
 
 }

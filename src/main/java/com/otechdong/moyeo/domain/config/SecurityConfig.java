@@ -51,9 +51,10 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/env", "/health-check").permitAll()
+                        .requestMatchers("/env", "/health-check", "/base-response", "/error-handler").permitAll()
                         .requestMatchers("/members/sign-in").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/test").authenticated()
+                        .anyRequest().denyAll());
         http
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
