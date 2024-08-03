@@ -6,6 +6,8 @@ import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Builder
 @Getter
@@ -26,11 +28,6 @@ public class CandidatePlace extends BaseEntity {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "vote_id")
-//    private Vote vote;
+    @Column(nullable = false)
+    private Integer voteCount;
 }
