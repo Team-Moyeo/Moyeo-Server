@@ -33,9 +33,9 @@ public class Member extends BaseEntity {
     @Column
     private String avatar;
 
-    @Column(nullable = false)
+    @Column
     private String phoneNumber;
 
-//    @Column(nullable = false)
-//    private String email;
+    @Column
+    private String email;
 }
