@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.config.security;
+package com.otechdong.moyeo.config.security;
 
 import com.otechdong.moyeo.domain.member.entity.Member;
 import org.springframework.context.annotation.Bean;

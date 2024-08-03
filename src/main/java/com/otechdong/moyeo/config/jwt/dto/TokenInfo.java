@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.config.jwt.dto;
+package com.otechdong.moyeo.config.jwt.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.otechdong.moyeo.domain.config.jwt.filter;
+package com.otechdong.moyeo.config.jwt.filter;
 
-import com.otechdong.moyeo.domain.config.jwt.service.JwtUtil;
+import com.otechdong.moyeo.config.jwt.service.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

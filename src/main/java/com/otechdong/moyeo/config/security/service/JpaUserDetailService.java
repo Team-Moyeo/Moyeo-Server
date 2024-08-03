@@ -1,6 +1,6 @@
-package com.otechdong.moyeo.domain.config.security.service;
+package com.otechdong.moyeo.config.security.service;
 
-import com.otechdong.moyeo.domain.config.security.CustomUserDetails;
+import com.otechdong.moyeo.config.security.CustomUserDetails;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.MemberErrorCode;
