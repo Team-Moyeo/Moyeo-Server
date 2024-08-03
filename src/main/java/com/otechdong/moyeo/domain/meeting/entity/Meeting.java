@@ -1,6 +1,6 @@
 package com.otechdong.moyeo.domain.meeting.entity;
 
-import com.otechdong.moyeo.domain.member.entity.PermissionRole;
+import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

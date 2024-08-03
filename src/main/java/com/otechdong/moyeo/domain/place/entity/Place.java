@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.meeting.entity;
+package com.otechdong.moyeo.domain.place.entity;
 
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseEntity;
