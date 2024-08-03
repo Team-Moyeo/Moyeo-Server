@@ -1,5 +1,6 @@
 package com.otechdong.moyeo.domain.meeting.entity;
 
+import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -8,6 +9,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -39,8 +42,9 @@ public class Meeting extends BaseEntity {
     @Column
     private LocalDateTime fixedDate;
 
-//    @JoinColumn
-//    private List<CandidatedPlace> candidatedPlaces;
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<CandidatePlace> candidatePlaces = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
