@@ -12,6 +12,8 @@ import com.otechdong.moyeo.domain.member.mapper.MemberMapper;
 import com.otechdong.moyeo.domain.member.mapper.AuthenticationMapper;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
 import com.otechdong.moyeo.domain.member.repository.RefreshTokenRepository;
+import com.otechdong.moyeo.global.exception.RestApiException;
+import com.otechdong.moyeo.global.exception.errorCode.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,11 @@ public class MemberServiceImpl implements MemberService {
     private final AuthenticationMapper authenticationMapper;
     private final RefreshTokenRepository refreshTokenRepository;
     private SecretKey secretKey;
+
+    @Override
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new RestApiException(MemberErrorCode.MEMBER_NOT_FOUND));
+    }
 
     @Override
     public MemberResponse.MemberSignIn signIn(MemberRequest.MemberSignIn request) {
@@ -71,6 +78,30 @@ public class MemberServiceImpl implements MemberService {
 
         TokenInfo tokenInfo = authenticationMapper.toTokenInfo(accessToken, refreshToken);
         return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
+    }
+
+    @Override
+    public MemberResponse.MemberResign resign(Member member) {
+        Member resignMember =findById(member.getId());
+        resignMember.resign();
+        return memberMapper.toMemberResign(member);
+    }
+
+    @Override
+    public MemberResponse.MemberGetMyProfile getMyProfile(Member member) {
+        return memberMapper.toMemberGetMyProfile(member);
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse.MemberUpdateMyProfile updateMyProfile(Member member, MemberRequest.MemberUpdateMyProfile request) {
+        Member editMember = findById(member.getId());
+
+        editMember.updateName(request.getName());
+        editMember.updateEmail(request.getEmail());
+        editMember.updatePhoneNumber(request.getPhoneNumber());
+
+        return memberMapper.toUpdateMyProfile(member);
     }
 
     //

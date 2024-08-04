@@ -26,4 +26,30 @@ public class MemberResponse {
         private String accessToken;
         private String refreshToken;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberResign {
+        private Long memberId;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberGetMyProfile {
+        private String name;
+        private String phoneNumber;
+        private String email;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberUpdateMyProfile {
+        private Long memberId;
+    }
 }
