@@ -3,12 +3,14 @@ package com.otechdong.moyeo.domain.member.entity;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("deleted_at is null")
 public class Member extends BaseEntity {
 
     @Id
@@ -38,4 +40,8 @@ public class Member extends BaseEntity {
 
     @Column
     private String email;
+
+    public void resign() {
+        delete();
+    }
 }

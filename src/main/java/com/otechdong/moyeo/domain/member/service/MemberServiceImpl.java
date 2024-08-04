@@ -12,6 +12,8 @@ import com.otechdong.moyeo.domain.member.mapper.MemberMapper;
 import com.otechdong.moyeo.domain.member.mapper.AuthenticationMapper;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
 import com.otechdong.moyeo.domain.member.repository.RefreshTokenRepository;
+import com.otechdong.moyeo.global.exception.RestApiException;
+import com.otechdong.moyeo.global.exception.errorCode.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +73,14 @@ public class MemberServiceImpl implements MemberService {
 
         TokenInfo tokenInfo = authenticationMapper.toTokenInfo(accessToken, refreshToken);
         return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
+    }
+
+    @Override
+    public MemberResponse.MemberResign resign(Member member) {
+        Member resignedMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new RestApiException(MemberErrorCode.MEMBER_NOT_FOUND));
+        resignedMember.resign();
+        return memberMapper.toMemberResign(member);
     }
 
     //

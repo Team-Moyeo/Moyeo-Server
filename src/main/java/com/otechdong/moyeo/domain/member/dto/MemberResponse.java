@@ -26,4 +26,12 @@ public class MemberResponse {
         private String accessToken;
         private String refreshToken;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberResign {
+        private Long memberId;
+    }
 }

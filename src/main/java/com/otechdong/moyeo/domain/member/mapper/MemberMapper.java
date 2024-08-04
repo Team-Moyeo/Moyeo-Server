@@ -30,4 +30,9 @@ public class MemberMapper {
                 .build();
     }
 
+    public MemberResponse.MemberResign toMemberResign(Member member) {
+        return MemberResponse.MemberResign.builder()
+                .memberId(member.getId())
+                .build();
+    }
 }

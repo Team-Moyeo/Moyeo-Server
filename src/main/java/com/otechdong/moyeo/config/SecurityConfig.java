@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/env", "/health-check", "/base-response", "/error-handler").permitAll()
                         .requestMatchers("/members/sign-in").permitAll()
-                        .requestMatchers("/test").authenticated()
+                        .requestMatchers("/test", "/members/resign").authenticated()
                         .anyRequest().denyAll());
         http
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
