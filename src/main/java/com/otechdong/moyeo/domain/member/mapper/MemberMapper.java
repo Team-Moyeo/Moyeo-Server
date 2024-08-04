@@ -18,6 +18,7 @@ public class MemberMapper {
                 .permissionRole(PermissionRole.ADMIN)
                 .avatar("")
                 .phoneNumber("")
+                .email("")
                 .build();
     }
 
@@ -33,6 +34,14 @@ public class MemberMapper {
     public MemberResponse.MemberResign toMemberResign(Member member) {
         return MemberResponse.MemberResign.builder()
                 .memberId(member.getId())
+                .build();
+    }
+
+    public MemberResponse.MemberGetMyProfile toMemberGetMyProfile(Member member) {
+        return MemberResponse.MemberGetMyProfile.builder()
+                .name(member.getName())
+                .phoneNumber(member.getPhoneNumber())
+                .email(member.getEmail())
                 .build();
     }
 }

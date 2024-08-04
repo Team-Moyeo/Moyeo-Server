@@ -83,6 +83,11 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.toMemberResign(member);
     }
 
+    @Override
+    public MemberResponse.MemberGetMyProfile getMyProfile(Member member) {
+        return memberMapper.toMemberGetMyProfile(member);
+    }
+
     //
     private MemberResponse.MemberSignIn saveNewMember(String clientId, SocialType socialType) {
         Member member = memberMapper.toMember(clientId, socialType);

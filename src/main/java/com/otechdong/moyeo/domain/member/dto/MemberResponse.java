@@ -34,4 +34,14 @@ public class MemberResponse {
     public static class MemberResign {
         private Long memberId;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberGetMyProfile {
+        private String name;
+        private String phoneNumber;
+        private String email;
+    }
 }

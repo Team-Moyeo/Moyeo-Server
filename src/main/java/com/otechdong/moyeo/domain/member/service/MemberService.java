@@ -9,4 +9,6 @@ public interface MemberService {
     MemberResponse.MemberSignIn signIn(MemberRequest.MemberSignIn request);
 
     MemberResponse.MemberResign resign(Member member);
+
+    MemberResponse.MemberGetMyProfile getMyProfile(Member member);
 }
