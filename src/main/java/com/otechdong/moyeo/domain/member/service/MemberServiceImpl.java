@@ -1,7 +1,7 @@
 package com.otechdong.moyeo.domain.member.service;
 
-import com.otechdong.moyeo.domain.config.jwt.dto.TokenInfo;
-import com.otechdong.moyeo.domain.config.jwt.service.JwtUtil;
+import com.otechdong.moyeo.config.jwt.dto.TokenInfo;
+import com.otechdong.moyeo.config.jwt.service.JwtUtil;
 import com.otechdong.moyeo.domain.member.dto.MemberRequest;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;

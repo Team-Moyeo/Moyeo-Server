@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.config.jwt.service;
+package com.otechdong.moyeo.config.jwt.service;
 
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.PermissionRole;

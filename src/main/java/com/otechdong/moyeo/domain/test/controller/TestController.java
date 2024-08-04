@@ -1,6 +1,6 @@
 package com.otechdong.moyeo.domain.test.controller;
 
-import com.otechdong.moyeo.domain.config.AuthenticationMember;
+import com.otechdong.moyeo.config.AuthenticationMember;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;

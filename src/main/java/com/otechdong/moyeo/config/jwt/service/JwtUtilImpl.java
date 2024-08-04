@@ -1,8 +1,8 @@
-package com.otechdong.moyeo.domain.config.jwt.service;
+package com.otechdong.moyeo.config.jwt.service;
 
-import com.otechdong.moyeo.domain.config.jwt.dto.JwtProperties;
-import com.otechdong.moyeo.domain.config.security.CustomUserDetails;
-import com.otechdong.moyeo.domain.config.security.service.JpaUserDetailService;
+import com.otechdong.moyeo.config.jwt.dto.JwtProperties;
+import com.otechdong.moyeo.config.security.CustomUserDetails;
+import com.otechdong.moyeo.config.security.service.JpaUserDetailService;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.PermissionRole;
 import com.otechdong.moyeo.domain.member.entity.RefreshToken;

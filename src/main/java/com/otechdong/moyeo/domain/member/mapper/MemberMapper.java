@@ -1,10 +1,9 @@
 package com.otechdong.moyeo.domain.member.mapper;
 
-import com.otechdong.moyeo.domain.config.jwt.dto.TokenInfo;
+import com.otechdong.moyeo.config.jwt.dto.TokenInfo;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.domain.member.entity.PermissionRole;
-import com.otechdong.moyeo.domain.member.entity.Role;
 import com.otechdong.moyeo.domain.member.entity.SocialType;
 import org.springframework.stereotype.Component;
 

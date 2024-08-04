@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.config;
+package com.otechdong.moyeo.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

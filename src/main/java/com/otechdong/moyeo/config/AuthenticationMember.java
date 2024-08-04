@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.config;
+package com.otechdong.moyeo.config;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

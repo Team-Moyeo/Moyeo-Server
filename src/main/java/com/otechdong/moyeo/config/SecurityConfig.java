@@ -1,7 +1,7 @@
-package com.otechdong.moyeo.domain.config;
+package com.otechdong.moyeo.config;
 
-import com.otechdong.moyeo.domain.config.jwt.filter.JwtFilter;
-import com.otechdong.moyeo.domain.config.jwt.service.JwtUtil;
+import com.otechdong.moyeo.config.jwt.filter.JwtFilter;
+import com.otechdong.moyeo.config.jwt.service.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
