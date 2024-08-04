@@ -27,6 +27,9 @@ public class Meeting extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private MeetingStatus meetingStatus;
+
     @Column
     private LocalDate startDate;
 
@@ -39,12 +42,8 @@ public class Meeting extends BaseEntity {
     @Column
     private LocalTime endTime;
 
-    @Column
-    private LocalDateTime fixedDate;
-
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<CandidatePlace> candidatePlaces = new ArrayList<>();
+//    @Column
+//    private List<CandidateDateTime> fixedTimeDates;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
