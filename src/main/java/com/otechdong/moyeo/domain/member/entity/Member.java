@@ -41,6 +41,22 @@ public class Member extends BaseEntity {
     @Column
     private String email;
 
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
     public void resign() {
         delete();
     }

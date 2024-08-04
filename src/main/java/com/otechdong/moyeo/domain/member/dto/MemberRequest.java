@@ -16,4 +16,14 @@ public class MemberRequest {
         private String encryptedUserIdentifier;
         private SocialType socialType;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberUpdateMyProfile {
+        private String name;
+        private String phoneNumber;
+        private String email;
+    }
 }

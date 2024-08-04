@@ -34,6 +34,11 @@ public class MemberServiceImpl implements MemberService {
     private SecretKey secretKey;
 
     @Override
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new RestApiException(MemberErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    @Override
     public MemberResponse.MemberSignIn signIn(MemberRequest.MemberSignIn request) {
 
         String clientId = request.getEncryptedUserIdentifier();
@@ -77,15 +82,26 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponse.MemberResign resign(Member member) {
-        Member resignedMember = memberRepository.findById(member.getId()).orElseThrow(
-                () -> new RestApiException(MemberErrorCode.MEMBER_NOT_FOUND));
-        resignedMember.resign();
+        Member resignMember =findById(member.getId());
+        resignMember.resign();
         return memberMapper.toMemberResign(member);
     }
 
     @Override
     public MemberResponse.MemberGetMyProfile getMyProfile(Member member) {
         return memberMapper.toMemberGetMyProfile(member);
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse.MemberUpdateMyProfile updateMyProfile(Member member, MemberRequest.MemberUpdateMyProfile request) {
+        Member editMember = findById(member.getId());
+
+        editMember.updateName(request.getName());
+        editMember.updateEmail(request.getEmail());
+        editMember.updatePhoneNumber(request.getPhoneNumber());
+
+        return memberMapper.toUpdateMyProfile(member);
     }
 
     //

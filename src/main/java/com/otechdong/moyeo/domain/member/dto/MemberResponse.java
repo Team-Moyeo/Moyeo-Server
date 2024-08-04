@@ -44,4 +44,12 @@ public class MemberResponse {
         private String phoneNumber;
         private String email;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberUpdateMyProfile {
+        private Long memberId;
+    }
 }

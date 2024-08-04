@@ -44,4 +44,10 @@ public class MemberMapper {
                 .email(member.getEmail())
                 .build();
     }
+
+    public MemberResponse.MemberUpdateMyProfile toUpdateMyProfile(Member member) {
+        return MemberResponse.MemberUpdateMyProfile.builder()
+                .memberId(member.getId())
+                .build();
+    }
 }
