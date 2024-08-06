@@ -31,5 +31,5 @@ public class CandidateTime extends BaseEntity {
     private LocalTime time;
 
     @Column(nullable = false)
-    private Integer voteCount;
+    private Integer voteCount = 0;
 }
