@@ -2,6 +2,7 @@ package com.otechdong.moyeo.domain.place.entity;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.member.entity.Member;
+import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +28,10 @@ public class CandidatePlace extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     private Integer voteCount;
