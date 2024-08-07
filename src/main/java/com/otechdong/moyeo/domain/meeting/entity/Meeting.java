@@ -59,7 +59,11 @@ public class Meeting extends BaseEntity {
     @Column(nullable = false)
     private String inviteCode;
 
-    public void updateFixedPlace(Place place) {
-        this.fixedPlace = place;
+    public void updateFixedPlace(Place fixedPlace) {
+        this.fixedPlace = fixedPlace;
+    }
+
+    public void updateFixedTime(List<CandidateTime> fixedTimeDates) {
+        this.fixedTimeDates = fixedTimeDates;
     }
 }

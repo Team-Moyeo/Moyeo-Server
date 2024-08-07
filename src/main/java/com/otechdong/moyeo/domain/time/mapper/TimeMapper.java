@@ -1,6 +1,7 @@
 package com.otechdong.moyeo.domain.time.mapper;
 
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
+import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.time.entity.CandidateTime;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,19 @@ public class TimeMapper {
         LocalDateTime localDateTime = LocalDateTime.parse(date + "T" + time);
 
         return localDateTime;
+    }
+
+    public CandidateTime toCandidateTime(
+            Meeting meeting,
+            String date,
+            String time
+    ) {
+        return CandidateTime.builder()
+                .meeting(meeting)
+                .date(LocalDate.parse(date))
+                .time(LocalTime.parse(time))
+                .voteCount(0)
+                .build();
     }
 
     // TODO : 이 부분 구현하기
