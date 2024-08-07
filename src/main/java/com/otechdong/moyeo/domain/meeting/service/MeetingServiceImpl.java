@@ -12,6 +12,7 @@ import com.otechdong.moyeo.domain.memberMeeting.service.MemberMeetingService;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.domain.place.mapper.CandidatePlaceMapper;
+import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;
 import com.otechdong.moyeo.domain.place.service.PlaceService;
 import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
@@ -19,6 +20,7 @@ import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.MeetingErrorCode;
 import com.otechdong.moyeo.global.exception.errorCode.PlaceErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +43,10 @@ public class MeetingServiceImpl implements MeetingService {
     private final MeetingMapper meetingMapper;
     private final CandidatePlaceMapper candidatePlaceMapper;
     private final TimeMapper timeMapper;
+    private final PlaceMapper placeMapper;
 
     @Override
+    @Transactional
     public MeetingResponse.MeetingCreate createMeeting(
             Member member,
             String title,
@@ -58,23 +63,25 @@ public class MeetingServiceImpl implements MeetingService {
         meetingRepository.save(newMeeting);
 
 
-//        // TODO : 이 부분 구현하기
-            // 1. 이미 정해진 장소가 있을 때
-//        Optional<Place> optionalFixedPlace = placeRepository.findByTitleAndAddressAndLatitudeAndLongitude(fixedPlace.getTitle(), fixedPlace.getAddress(), fixedPlace.getLatitude(), fixedPlace.getLongitude());
-//
-//        // TODO : 이 부분 구현하기
-////        // 2. 이미 정해진 시간이 있을 때
-//        Optional<List<LocalDateTime>> optionalFixedTimes = Optional.of(fixedTimes.stream()
-//                .map(fixedTime -> timeMapper.toLocalDateTime(
-//                        fixedTime.getDate(),
-//                        fixedTime.getTime()))
-//                .toList());
+        // 입력받은 확정 장소가 있는 경우
+        if (fixedPlace != null) {
+            Optional<Place> optionalFixedPlace = placeRepository.findByTitleAndAddressAndLatitudeAndLongitude(fixedPlace.getTitle(), fixedPlace.getAddress(), fixedPlace.getLatitude(), fixedPlace.getLongitude());
+
+            Place place;
+            if (optionalFixedPlace.isPresent()) {    // 1. 입력받은 확정 장소가 이전에 멤버가 등록해놓은 장소일 경우
+                place = optionalFixedPlace.get();
+            } else {                                // 2. 입력받은 확정 장소가 이전에 멤버가 등록하지 않은 장소일 경우
+                place = placeRepository.save(placeMapper.toPlace(member, fixedPlace.getTitle(), fixedPlace.getAddress(), fixedPlace.getLatitude(), fixedPlace.getLongitude()));
+            }
+            newMeeting.updateFixedPlace(place);
+        }
+        
 
         memberMeetingService.createMemberMeeting(member, newMeeting, Role.OWNER);
 
         // TODO : 이 부분 구현하기
 
-        return meetingMapper.toMeetingCreateMeeting(newMeeting);
+        return meetingMapper.toMeetingCreate(newMeeting);
     }
 
     @Override

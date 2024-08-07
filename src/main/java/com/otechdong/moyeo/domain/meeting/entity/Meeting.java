@@ -47,7 +47,7 @@ public class Meeting extends BaseEntity {
     private List<CandidateTime> fixedTimeDates = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "candidate_place_id")
+    @JoinColumn(name = "place_id")
     private Place fixedPlace;
 
     @Column(nullable = false)
@@ -58,4 +58,8 @@ public class Meeting extends BaseEntity {
 
     @Column(nullable = false)
     private String inviteCode;
+
+    public void updateFixedPlace(Place place) {
+        this.fixedPlace = place;
+    }
 }

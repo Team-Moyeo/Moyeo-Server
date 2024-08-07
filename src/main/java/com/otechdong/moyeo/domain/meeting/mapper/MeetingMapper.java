@@ -18,7 +18,7 @@ public class MeetingMapper {
 
     private TimeMapper timeMapper;
 
-    public MeetingResponse.MeetingCreate toMeetingCreateMeeting(Meeting meeting) {
+    public MeetingResponse.MeetingCreate toMeetingCreate(Meeting meeting) {
         return MeetingResponse.MeetingCreate.builder()
                 .meetingId(meeting.getId())
                 .build();
