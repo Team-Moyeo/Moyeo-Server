@@ -47,7 +47,7 @@ public class MeetingMapper {
                 .fixedPlace(fixedPlace)
                 .deadline(deadline)
                 .numberOfPeople(1L)
-                .inviteCode("ASDF")
+                .inviteCode(title + LocalDateTime.now().toString() + deadline.toString()) // 추후 랜덤한 초대코드로 수정 예정
                 .meetingStatus(MeetingStatus.PENDING)
                 .build();
     }
