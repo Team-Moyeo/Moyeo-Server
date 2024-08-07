@@ -175,6 +175,11 @@ public class MeetingServiceImpl implements MeetingService {
     public MeetingResponse.MeetingJoinWithInviteCode joinMeetingWithInviteCode(Member member, String inviteCode) {
         Meeting meeting = meetingRepository.findByInviteCode(inviteCode)
                 .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        // 이미 가입된 모임일 경우
+        if (memberMeetingRepository.existsByMemberAndMeeting(member, meeting)) {
+            throw new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_ALREADY_EXIST);
+        }
         MemberMeeting memberMeeting = memberMeetingMapper.toMemberMeeting(member, meeting, Role.PARTICIPANTS);
         memberMeetingRepository.save(memberMeeting);
         return meetingMapper.toMeetingJoinWithInviteCode(meeting);

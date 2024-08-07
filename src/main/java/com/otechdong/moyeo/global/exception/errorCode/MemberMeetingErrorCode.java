@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum MemberMeetingErrorCode implements ErrorCodeInterface {
-    MEMBER_MEETING_NOT_FOUND("MEMBERMEETING001", "MEETING에 MEMBER가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    MEMBER_MEETING_NOT_FOUND("MEMBERMEETING001", "모임에 멤버가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    MEMBER_MEETING_ALREADY_EXIST("MEMBERMEETING002", "이미 가입된 모임입니다.", HttpStatus.BAD_REQUEST),
     ;
 
     private final String code;

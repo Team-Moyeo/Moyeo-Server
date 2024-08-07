@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface MemberMeetingRepository extends JpaRepository<MemberMeeting, Long> {
 
     Optional<MemberMeeting> findByMemberAndMeeting(Member member, Meeting meeting);
+    boolean existsByMemberAndMeeting(Member member, Meeting meeting);
 }
