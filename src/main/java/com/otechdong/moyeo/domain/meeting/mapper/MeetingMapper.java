@@ -77,4 +77,11 @@ public class MeetingMapper {
     }
 
 
+    public MeetingResponse.MeetingJoinWithInviteCode toMeetingJoinWithInviteCode(
+            Meeting meeting
+    ) {
+        return MeetingResponse.MeetingJoinWithInviteCode.builder()
+                .meetingId(meeting.getId())
+                .build();
+    }
 }

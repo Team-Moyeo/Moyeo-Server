@@ -18,4 +18,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
     @Query("SELECT m FROM Meeting m LEFT JOIN MemberMeeting mm ON m.id = mm.meeting.id WHERE mm.member.id = :memberId AND m.meetingStatus = :meetingStatus")
     List<Meeting> findMeetingsByMemberIdAndMeetingStatus(@Param("memberId") Long memberId, @Param("meetingStatus") MeetingStatus meetingStatus);
+
+    Optional<Meeting> findByInviteCode(String inviteCode);
 }

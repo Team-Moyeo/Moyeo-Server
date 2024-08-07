@@ -10,6 +10,7 @@ import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.domain.member.entity.Role;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
+import com.otechdong.moyeo.domain.memberMeeting.mapper.MemberMeetingMapper;
 import com.otechdong.moyeo.domain.memberMeeting.repository.MemberMeetingRepository;
 import com.otechdong.moyeo.domain.memberMeeting.service.MemberMeetingService;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
@@ -53,6 +54,7 @@ public class MeetingServiceImpl implements MeetingService {
     private final CandidatePlaceMapper candidatePlaceMapper;
     private final TimeMapper timeMapper;
     private final PlaceMapper placeMapper;
+    private final MemberMeetingMapper memberMeetingMapper;
 
     @Override
     @Transactional
@@ -162,6 +164,15 @@ public class MeetingServiceImpl implements MeetingService {
         }
         meeting.delete();
         return meetingMapper.toMeetingDelete(meeting);
+    }
+
+    @Override
+    public MeetingResponse.MeetingJoinWithInviteCode joinMeetingWithInviteCode(Member member, String inviteCode) {
+        Meeting meeting = meetingRepository.findByInviteCode(inviteCode)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+        MemberMeeting memberMeeting = memberMeetingMapper.toMemberMeeting(member, meeting, Role.PARTICIPANTS);
+        memberMeetingRepository.save(memberMeeting);
+        return meetingMapper.toMeetingJoinWithInviteCode(meeting);
     }
 
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {

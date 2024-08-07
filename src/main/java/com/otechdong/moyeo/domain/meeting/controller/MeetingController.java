@@ -60,4 +60,11 @@ public class MeetingController {
         return BaseResponse.onSuccess(meetingService.deleteMeeting(member, meetingId));
     }
 
+    @PostMapping("/join/{inviteCode}")
+    public BaseResponse<MeetingResponse.MeetingJoinWithInviteCode> joinMeetingWithInviteCode(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "inviteCode") String inviteCode
+    ) {
+        return BaseResponse.onSuccess(meetingService.joinMeetingWithInviteCode(member, inviteCode));
+    }
 }
