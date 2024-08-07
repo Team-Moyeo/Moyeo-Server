@@ -30,4 +30,6 @@ public interface MeetingService {
             Long placeId);
 
     MeetingResponse.MeetingGetList getMeetingsByMeetingStatus(Member member, MeetingStatus meetingStatus);
+
+    MeetingResponse.MeetingDelete deleteMeeting(Member member, Long meetingId);
 }

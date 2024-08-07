@@ -68,5 +68,13 @@ public class MeetingMapper {
                 .build();
     }
 
+    public MeetingResponse.MeetingDelete toMeetingDelete(
+            Meeting meeting
+    ) {
+       return MeetingResponse.MeetingDelete.builder()
+               .meetingId(meeting.getId())
+               .build();
+    }
+
 
 }

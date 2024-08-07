@@ -52,4 +52,12 @@ public class MeetingController {
         return BaseResponse.onSuccess(meetingService.getMeetingsByMeetingStatus(member, meetingStatus));
     }
 
+    @DeleteMapping("/{meetingId}")
+    public BaseResponse<MeetingResponse.MeetingDelete> deleteMeeting(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId
+    ) {
+        return BaseResponse.onSuccess(meetingService.deleteMeeting(member, meetingId));
+    }
+
 }

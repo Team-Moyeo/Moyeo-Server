@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum MeetingErrorCode implements ErrorCodeInterface {
-    MEETING_NOT_FOUND("MEETING001", "MEETING이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
-    MEETING_ACCESS_DENIED("MEETING002", "권한이 없습니다.",HttpStatus.FORBIDDEN),
-            ;
+public enum MemberMeetingErrorCode implements ErrorCodeInterface {
+    MEMBER_MEETING_NOT_FOUND("MEMBERMEETING001", "MEETING에 MEMBER가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    ;
+
     private final String code;
     private final String message;
     private final HttpStatus httpStatus;

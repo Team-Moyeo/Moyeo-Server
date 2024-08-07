@@ -9,6 +9,8 @@ import com.otechdong.moyeo.domain.meeting.repository.MeetingRepository;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.domain.member.entity.Role;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
+import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
+import com.otechdong.moyeo.domain.memberMeeting.repository.MemberMeetingRepository;
 import com.otechdong.moyeo.domain.memberMeeting.service.MemberMeetingService;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
@@ -22,6 +24,7 @@ import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
 import com.otechdong.moyeo.domain.time.repository.CandidateTimeRepository;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.MeetingErrorCode;
+import com.otechdong.moyeo.global.exception.errorCode.MemberMeetingErrorCode;
 import com.otechdong.moyeo.global.exception.errorCode.PlaceErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
@@ -43,6 +46,7 @@ public class MeetingServiceImpl implements MeetingService {
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
     private final CandidatePlaceRepository candidatePlaceRepository;
+    private final MemberMeetingRepository memberMeetingRepository;
     private final MemberMeetingService memberMeetingService;
     private final PlaceService placeService;
     private final MeetingMapper meetingMapper;
@@ -145,5 +149,24 @@ public class MeetingServiceImpl implements MeetingService {
         return meetingMapper.toMeetingGetList(meetings.stream()
                         .map(meetingMapper::toMeetingGetListMeetingInfo)
                 .toList());
+    }
+
+    @Override
+    public MeetingResponse.MeetingDelete deleteMeeting(Member member, Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        // 모임 장이 아니면 에러 반환
+        if (!isOwnerOfMeeting(member, meeting)) {
+            throw new RestApiException(MeetingErrorCode.MEETING_ACCESS_DENIED);
+        }
+        meeting.delete();
+        return meetingMapper.toMeetingDelete(meeting);
+    }
+
+    public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {
+        MemberMeeting memberMeeting =  memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
+        return memberMeeting.getRole() == Role.OWNER;
     }
 }

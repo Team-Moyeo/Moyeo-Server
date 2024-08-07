@@ -46,4 +46,13 @@ public class MeetingResponse {
         private LocalDateTime deadline;
         private MeetingStatus meetingStatus;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingDelete {
+        private Long meetingId;
+
+    }
 }
