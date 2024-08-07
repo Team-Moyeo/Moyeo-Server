@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class MemberResponse {
 
     @Getter
@@ -51,5 +53,23 @@ public class MemberResponse {
     @NoArgsConstructor
     public static class MemberUpdateMyProfile {
         private Long memberId;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberGetListByMeeting {
+        private List<MemberGetListByMeetingMemberInfo> memberInfos;
+
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberGetListByMeetingMemberInfo {
+        private String name;
+        private String avatar;
     }
 }

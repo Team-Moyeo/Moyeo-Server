@@ -2,6 +2,8 @@ package com.otechdong.moyeo.domain.member.service;
 
 import com.otechdong.moyeo.config.jwt.dto.TokenInfo;
 import com.otechdong.moyeo.config.jwt.service.JwtUtil;
+import com.otechdong.moyeo.domain.meeting.entity.Meeting;
+import com.otechdong.moyeo.domain.meeting.repository.MeetingRepository;
 import com.otechdong.moyeo.domain.member.dto.MemberRequest;
 import com.otechdong.moyeo.domain.member.dto.MemberResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
@@ -12,13 +14,18 @@ import com.otechdong.moyeo.domain.member.mapper.MemberMapper;
 import com.otechdong.moyeo.domain.member.mapper.AuthenticationMapper;
 import com.otechdong.moyeo.domain.member.repository.MemberRepository;
 import com.otechdong.moyeo.domain.member.repository.RefreshTokenRepository;
+import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
+import com.otechdong.moyeo.domain.memberMeeting.repository.MemberMeetingRepository;
 import com.otechdong.moyeo.global.exception.RestApiException;
+import com.otechdong.moyeo.global.exception.errorCode.MeetingErrorCode;
 import com.otechdong.moyeo.global.exception.errorCode.MemberErrorCode;
+import com.otechdong.moyeo.global.exception.errorCode.MemberMeetingErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKey;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +34,8 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final MeetingRepository meetingRepository;
+    private final MemberMeetingRepository memberMeetingRepository;
     private final MemberMapper memberMapper;
     private final JwtUtil jwtUtil;
     private final AuthenticationMapper authenticationMapper;
@@ -102,6 +111,21 @@ public class MemberServiceImpl implements MemberService {
         editMember.updatePhoneNumber(request.getPhoneNumber());
 
         return memberMapper.toUpdateMyProfile(member);
+    }
+
+    @Override
+    public MemberResponse.MemberGetListByMeeting getMembersByMeeting(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        List<Member> members = memberRepository.findByMeeting(meeting.getId())
+                .orElseThrow(() -> new RestApiException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        return memberMapper.toMemberGetListByMeeting(members
+                .stream()
+                .map(memberMapper::toMemberGetListByMeetingMemberInfo)
+                .toList()
+        );
     }
 
     //

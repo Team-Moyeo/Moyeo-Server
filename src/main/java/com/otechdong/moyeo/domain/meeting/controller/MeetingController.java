@@ -73,4 +73,12 @@ public class MeetingController {
     ) {
         return BaseResponse.onSuccess(meetingService.getInviteCode(meetingId));
     }
+//
+//    @GetMapping("/{meetingId}")
+//    public BaseResponse<MeetingResponse.MeetingGetDetail> getMeetingDetail(
+//            @AuthenticationMember Member member,
+//            @PathVariable(value = "meetingId") Long meetingId
+//    ) {
+//        return BaseResponse.onSuccess(meetingService.getMeetingDetail(member, meetingId));
+//    }
 }

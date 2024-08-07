@@ -71,4 +71,23 @@ public class MeetingResponse {
     public static class MeetingGetInviteCode {
         private String inviteCode;
     }
+//
+//    @Getter
+//    @Builder
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    public static class MeetingGetDetail {
+//        private String title;
+//        private LocalDateTime deadline;
+//        private List<MeetingGetDetailMemberProfile> memberProfiles;
+//    }
+//
+//    @Getter
+//    @Builder
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    public static class MeetingGetDetailMemberProfile {
+//        private String name;
+//        private String avatar;
+//    }
 }

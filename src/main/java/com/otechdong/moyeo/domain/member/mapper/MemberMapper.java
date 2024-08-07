@@ -7,6 +7,8 @@ import com.otechdong.moyeo.domain.member.entity.PermissionRole;
 import com.otechdong.moyeo.domain.member.entity.SocialType;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class MemberMapper {
 
@@ -48,6 +50,19 @@ public class MemberMapper {
     public MemberResponse.MemberUpdateMyProfile toUpdateMyProfile(Member member) {
         return MemberResponse.MemberUpdateMyProfile.builder()
                 .memberId(member.getId())
+                .build();
+    }
+
+    public MemberResponse.MemberGetListByMeetingMemberInfo toMemberGetListByMeetingMemberInfo(Member member) {
+        return MemberResponse.MemberGetListByMeetingMemberInfo.builder()
+                .name(member.getName())
+                .avatar(member.getAvatar())
+                .build();
+    }
+
+    public MemberResponse.MemberGetListByMeeting toMemberGetListByMeeting(List<MemberResponse.MemberGetListByMeetingMemberInfo> members) {
+        return MemberResponse.MemberGetListByMeeting.builder()
+                .memberInfos(members)
                 .build();
     }
 }

@@ -7,10 +7,7 @@ import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.domain.member.service.MemberService;
 import com.otechdong.moyeo.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,5 +27,12 @@ public class MemberController {
             @AuthenticationMember Member member,
             @RequestBody MemberRequest.MemberUpdateMyProfile request) {
         return BaseResponse.onSuccess(memberService.updateMyProfile(member, request));
+    }
+
+    @GetMapping("/meeting/{meetingId}")
+    public BaseResponse<MemberResponse.MemberGetListByMeeting> getMembersByMeeting(
+            @PathVariable(name = "meetingId") Long meetingId
+    ) {
+        return BaseResponse.onSuccess(memberService.getMembersByMeeting(meetingId));
     }
 }
