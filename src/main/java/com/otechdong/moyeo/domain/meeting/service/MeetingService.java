@@ -18,7 +18,7 @@ public interface MeetingService {
             LocalTime startTime,
             LocalDate endDate,
             LocalTime endTime,
-            List<MeetingRequest.MeetingCreateTime> fixedTimes,
+            List<LocalDateTime> fixedTimes,
             List<MeetingRequest.MeetingCreatePlace> candidatePlaces,
             MeetingRequest.MeetingCreatePlace fixedPlace,
             LocalDateTime deadline);

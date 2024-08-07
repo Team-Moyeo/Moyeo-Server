@@ -31,7 +31,7 @@ public class MeetingMapper {
             LocalTime startTime,
             LocalDate endDate,
             LocalTime endTime,
-            List<CandidateTime> fixedTimes,
+            List<LocalDateTime> fixedTimes,
             List<CandidateTime> candidatePlaces,
             Place fixedPlace,
             LocalDateTime deadline) {
@@ -41,7 +41,7 @@ public class MeetingMapper {
                 .startTime(startTime)
                 .endDate(endDate)
                 .endTime(endTime)
-                .fixedTimeDates(fixedTimes)
+                .fixedTimes(fixedTimes)
                 .fixedPlace(fixedPlace)
                 .deadline(deadline)
                 .numberOfPeople(1L)

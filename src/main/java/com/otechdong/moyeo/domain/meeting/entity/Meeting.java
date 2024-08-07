@@ -42,9 +42,10 @@ public class Meeting extends BaseEntity {
     @Column
     private LocalTime endTime;
 
-    @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private List<CandidateTime> fixedTimeDates = new ArrayList<>();
+    @CollectionTable(name = "fixed_time", joinColumns = @JoinColumn(name = "meeting_id"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<LocalDateTime> fixedTimes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
@@ -63,7 +64,7 @@ public class Meeting extends BaseEntity {
         this.fixedPlace = fixedPlace;
     }
 
-    public void updateFixedTime(List<CandidateTime> fixedTimeDates) {
-        this.fixedTimeDates = fixedTimeDates;
+    public void updateFixedTime(List<LocalDateTime> fixedTimes) {
+        this.fixedTimes = fixedTimes;
     }
 }

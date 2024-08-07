@@ -22,7 +22,7 @@ public class MeetingRequest {
         private LocalDate endDate;
         private LocalTime startTime;
         private LocalTime endTime;
-        private List<MeetingCreateTime> fixedTimes;
+        private List<LocalDateTime> fixedTimes;
         private MeetingCreatePlace fixedPlace;
         private List<MeetingCreatePlace> candidatePlaces;
         private LocalDateTime deadline;

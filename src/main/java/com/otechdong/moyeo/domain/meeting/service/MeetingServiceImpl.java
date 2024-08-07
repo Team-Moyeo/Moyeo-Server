@@ -13,6 +13,7 @@ import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.domain.place.mapper.CandidatePlaceMapper;
 import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
+import com.otechdong.moyeo.domain.place.repository.CandidatePlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;
 import com.otechdong.moyeo.domain.place.service.PlaceService;
 import com.otechdong.moyeo.domain.time.entity.CandidateTime;
@@ -40,7 +41,7 @@ public class MeetingServiceImpl implements MeetingService {
     private final MeetingRepository meetingRepository;
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
-    private final CandidateTimeRepository candidateTimeRepository;
+    private final CandidatePlaceRepository candidatePlaceRepository;
     private final MemberMeetingService memberMeetingService;
     private final PlaceService placeService;
     private final MeetingMapper meetingMapper;
@@ -57,7 +58,7 @@ public class MeetingServiceImpl implements MeetingService {
             LocalTime startTime,
             LocalDate endDate,
             LocalTime endTime,
-            List<MeetingRequest.MeetingCreateTime> fixedTimes,
+            List<LocalDateTime> fixedTimes,
             List<MeetingRequest.MeetingCreatePlace> candidatePlaces,
             MeetingRequest.MeetingCreatePlace fixedPlace,
             LocalDateTime deadline) {
@@ -80,14 +81,38 @@ public class MeetingServiceImpl implements MeetingService {
         }
 
         // 입력받은 확정 시간이 있는 경우
-        if (!fixedTimes.isEmpty()) {
-            List<CandidateTime> candidateTimes = fixedTimes
-                    .stream()
-                    .map(fixedTime -> timeMapper.toCandidateTime(newMeeting, fixedTime.getDate(), fixedTime.getTime()))
-                    .toList();
-            candidateTimeRepository.saveAll(candidateTimes);
+        if (fixedTimes != null) {
+            newMeeting.updateFixedTime(fixedTimes);
         }
-        System.out.println(fixedTimes);
+
+        // 입력받은 후보 장소가 있는 경우
+        if (candidatePlaces != null) {
+            List<CandidatePlace> meetingCandidatePlaces = candidatePlaces
+                    .stream()
+                    .map(candidatePlace -> {
+                        Optional<Place> optionalPlace = placeRepository.findByTitleAndAddressAndLatitudeAndLongitude(
+                                candidatePlace.getTitle(),
+                                candidatePlace.getAddress(),
+                                candidatePlace.getLatitude(),
+                                candidatePlace.getLongitude()
+                        );
+
+                        Place place = optionalPlace.orElseGet(() -> {
+                            Place newPlace = placeMapper.toPlace(
+                                    member,
+                                    candidatePlace.getTitle(),
+                                    candidatePlace.getAddress(),
+                                    candidatePlace.getLatitude(),
+                                    candidatePlace.getLongitude()
+                            );
+                            return placeRepository.save(newPlace);
+                        });
+
+                        return candidatePlaceMapper.toCandidatePlace(place, newMeeting, member);
+                    })
+                    .toList();
+            candidatePlaceRepository.saveAll(meetingCandidatePlaces);
+        }
 
 
         memberMeetingService.createMemberMeeting(member, newMeeting, Role.OWNER);
