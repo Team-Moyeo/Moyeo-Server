@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class MeetingResponse {
@@ -71,23 +73,37 @@ public class MeetingResponse {
     public static class MeetingGetInviteCode {
         private String inviteCode;
     }
-//
-//    @Getter
-//    @Builder
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class MeetingGetDetail {
-//        private String title;
-//        private LocalDateTime deadline;
-//        private List<MeetingGetDetailMemberProfile> memberProfiles;
-//    }
-//
-//    @Getter
-//    @Builder
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class MeetingGetDetailMemberProfile {
-//        private String name;
-//        private String avatar;
-//    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingGetDetail {
+        private String title;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private LocalTime startTime;
+        private LocalTime endTime;
+        private LocalDateTime deadline;
+        private List<LocalDateTime> myCandidateTimes;
+        private List<Double> totalTimeTable;
+        private List<MeetingGetDetailCandidatePlace> candidatePlaces;
+        private Long numberOfPeople;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingGetDetailCandidatePlace {
+        private String title;
+        private String address;
+        private Double latitude;
+        private Double longitude;
+        private Integer voteCount;
+    }
+
+
+
+
 }

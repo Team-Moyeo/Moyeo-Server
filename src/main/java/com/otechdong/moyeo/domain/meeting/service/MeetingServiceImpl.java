@@ -33,6 +33,7 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +76,7 @@ public class MeetingServiceImpl implements MeetingService {
             inviteCode = generateInviteCode();
         }
 
-            Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline, inviteCode);
+        Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline, inviteCode);
         meetingRepository.save(newMeeting);
 
 
@@ -191,6 +192,20 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
 
         return meetingMapper.toMeetingGetInviteCode(meeting.getInviteCode());
+    }
+
+    @Override
+    public MeetingResponse.MeetingGetDetail getMeetingDetail(Member member, Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        // TODO : 실제 데이터 연산 구현
+        List<LocalDateTime> myCandidateTimes = new ArrayList<>();
+        List<Double> totalTimeTable = new ArrayList<>();
+        List<Place> candidateInfos = new ArrayList<>();
+
+
+        return meetingMapper.toMeetingGetDetail(meeting, myCandidateTimes, totalTimeTable, null);
     }
 
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {

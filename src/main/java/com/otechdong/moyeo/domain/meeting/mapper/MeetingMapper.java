@@ -90,4 +90,24 @@ public class MeetingMapper {
                 .inviteCode(inviteCode)
                 .build();
     }
+
+    public MeetingResponse.MeetingGetDetail toMeetingGetDetail(
+            Meeting meeting,
+            List<LocalDateTime> myCandidateTimes,
+            List<Double> totalTimeTable,
+            List<MeetingResponse.MeetingGetDetailCandidatePlace> candidatePlaces
+    ) {
+        return MeetingResponse.MeetingGetDetail.builder()
+                .title(meeting.getTitle())
+                .startDate(meeting.getStartDate())
+                .endDate(meeting.getEndDate())
+                .startTime(meeting.getStartTime())
+                .endTime(meeting.getEndTime())
+                .deadline(meeting.getDeadline())
+                .myCandidateTimes(myCandidateTimes)
+                .totalTimeTable(totalTimeTable)
+                .candidatePlaces(candidatePlaces)
+                .numberOfPeople(meeting.getNumberOfPeople())
+                .build();
+    }
 }
