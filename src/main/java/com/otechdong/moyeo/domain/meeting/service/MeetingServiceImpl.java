@@ -20,18 +20,16 @@ import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
 import com.otechdong.moyeo.domain.place.repository.CandidatePlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;
 import com.otechdong.moyeo.domain.place.service.PlaceService;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
 import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
-import com.otechdong.moyeo.domain.time.repository.CandidateTimeRepository;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.MeetingErrorCode;
 import com.otechdong.moyeo.global.exception.errorCode.MemberMeetingErrorCode;
 import com.otechdong.moyeo.global.exception.errorCode.PlaceErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -70,7 +68,14 @@ public class MeetingServiceImpl implements MeetingService {
             MeetingRequest.MeetingCreatePlace fixedPlace,
             LocalDateTime deadline) {
 
-        Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline);
+
+        // 초대 코드 중복 검사
+        String inviteCode = generateInviteCode();
+        while (existsDuplicatedInviteCode(inviteCode)) {
+            inviteCode = generateInviteCode();
+        }
+
+            Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline, inviteCode);
         meetingRepository.save(newMeeting);
 
 
@@ -149,7 +154,7 @@ public class MeetingServiceImpl implements MeetingService {
             meetings = meetingRepository.findMeetingsByMemberIdAndMeetingStatus(member.getId(), meetingStatus);
         }
         return meetingMapper.toMeetingGetList(meetings.stream()
-                        .map(meetingMapper::toMeetingGetListMeetingInfo)
+                .map(meetingMapper::toMeetingGetListMeetingInfo)
                 .toList());
     }
 
@@ -175,9 +180,37 @@ public class MeetingServiceImpl implements MeetingService {
         return meetingMapper.toMeetingJoinWithInviteCode(meeting);
     }
 
+    @Override
+    public MeetingResponse.MeetingGetInviteCode getInviteCode(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        return meetingMapper.toMeetingGetInviteCode(meeting.getInviteCode());
+    }
+
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {
-        MemberMeeting memberMeeting =  memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
                 .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
         return memberMeeting.getRole() == Role.OWNER;
     }
+
+    public String generateInviteCode() {
+
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int CODE_LENGTH = 8;
+        SecureRandom RANDOM = new SecureRandom();
+
+        StringBuilder inviteCode = new StringBuilder(CODE_LENGTH);
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            int randomIndex = RANDOM.nextInt(CHARACTERS.length());
+            inviteCode.append(CHARACTERS.charAt(randomIndex));
+        }
+        return inviteCode.toString();
+    }
+
+    // 초대 코드 중복 검사 함수
+    public Boolean existsDuplicatedInviteCode(String inviteCode) {
+        return meetingRepository.existsByInviteCode(inviteCode);
+    }
+
 }

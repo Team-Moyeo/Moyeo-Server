@@ -48,7 +48,6 @@ public class MeetingController {
             @AuthenticationMember Member member,
             @RequestParam(name = "meetingStatus", required = false) MeetingStatus meetingStatus
     ) {
-        System.out.println("TEST");
         return BaseResponse.onSuccess(meetingService.getMeetingsByMeetingStatus(member, meetingStatus));
     }
 
@@ -66,5 +65,12 @@ public class MeetingController {
             @PathVariable(value = "inviteCode") String inviteCode
     ) {
         return BaseResponse.onSuccess(meetingService.joinMeetingWithInviteCode(member, inviteCode));
+    }
+
+    @GetMapping("/invite-code/{meetingId}")
+    public BaseResponse<MeetingResponse.MeetingGetInviteCode> getInviteCode(
+            @PathVariable(value = "meetingId") Long meetingId
+    ) {
+        return BaseResponse.onSuccess(meetingService.getInviteCode(meetingId));
     }
 }

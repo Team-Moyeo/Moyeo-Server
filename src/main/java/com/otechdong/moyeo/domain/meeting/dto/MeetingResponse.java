@@ -63,4 +63,12 @@ public class MeetingResponse {
     public static class MeetingJoinWithInviteCode {
         private Long meetingId;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingGetInviteCode {
+        private String inviteCode;
+    }
 }

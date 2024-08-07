@@ -34,4 +34,6 @@ public interface MeetingService {
     MeetingResponse.MeetingDelete deleteMeeting(Member member, Long meetingId);
 
     MeetingResponse.MeetingJoinWithInviteCode joinMeetingWithInviteCode(Member member, String inviteCode);
+
+    MeetingResponse.MeetingGetInviteCode getInviteCode(Long meetingId);
 }

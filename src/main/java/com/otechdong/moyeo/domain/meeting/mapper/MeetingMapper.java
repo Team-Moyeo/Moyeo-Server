@@ -34,9 +34,9 @@ public class MeetingMapper {
             LocalDate endDate,
             LocalTime endTime,
             List<LocalDateTime> fixedTimes,
-//            List<CandidatePlace> candidatePlaces,
             Place fixedPlace,
-            LocalDateTime deadline) {
+            LocalDateTime deadline,
+            String inviteCode) {
         return Meeting.builder()
                 .title(title)
                 .startDate(startDate)
@@ -47,7 +47,7 @@ public class MeetingMapper {
                 .fixedPlace(fixedPlace)
                 .deadline(deadline)
                 .numberOfPeople(1L)
-                .inviteCode(title + LocalDateTime.now().toString() + deadline.toString()) // 추후 랜덤한 초대코드로 수정 예정
+                .inviteCode(inviteCode)
                 .meetingStatus(MeetingStatus.PENDING)
                 .build();
     }
@@ -82,6 +82,12 @@ public class MeetingMapper {
     ) {
         return MeetingResponse.MeetingJoinWithInviteCode.builder()
                 .meetingId(meeting.getId())
+                .build();
+    }
+
+    public MeetingResponse.MeetingGetInviteCode toMeetingGetInviteCode(String inviteCode) {
+        return MeetingResponse.MeetingGetInviteCode.builder()
+                .inviteCode(inviteCode)
                 .build();
     }
 }
