@@ -3,6 +3,7 @@ package com.otechdong.moyeo.domain.meeting.controller;
 import com.otechdong.moyeo.config.AuthenticationMember;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
+import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
 import com.otechdong.moyeo.domain.meeting.service.MeetingService;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
@@ -40,6 +41,15 @@ public class MeetingController {
             @PathVariable(value = "placeId") Long placeId
     ) {
         return BaseResponse.onSuccess(meetingService.addCandidatePlace(member, meetingId, placeId));
+    }
+
+    @GetMapping
+    public BaseResponse<MeetingResponse.MeetingGetList> getMeetingsByMeetingStatus(
+            @AuthenticationMember Member member,
+            @RequestParam(name = "meetingStatus", required = false) MeetingStatus meetingStatus
+    ) {
+        System.out.println("TEST");
+        return BaseResponse.onSuccess(meetingService.getMeetingsByMeetingStatus(member, meetingStatus));
     }
 
 }

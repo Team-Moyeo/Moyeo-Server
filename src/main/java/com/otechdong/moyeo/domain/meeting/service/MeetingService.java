@@ -2,6 +2,7 @@ package com.otechdong.moyeo.domain.meeting.service;
 
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
+import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
 import com.otechdong.moyeo.domain.member.entity.Member;
 
 import java.time.LocalDate;
@@ -27,4 +28,6 @@ public interface MeetingService {
             Member member,
             Long meetingId,
             Long placeId);
+
+    MeetingResponse.MeetingGetList getMeetingsByMeetingStatus(Member member, MeetingStatus meetingStatus);
 }

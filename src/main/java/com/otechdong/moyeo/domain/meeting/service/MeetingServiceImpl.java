@@ -3,6 +3,7 @@ package com.otechdong.moyeo.domain.meeting.service;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
+import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
 import com.otechdong.moyeo.domain.meeting.mapper.MeetingMapper;
 import com.otechdong.moyeo.domain.meeting.repository.MeetingRepository;
 import com.otechdong.moyeo.domain.member.entity.Member;
@@ -63,7 +64,7 @@ public class MeetingServiceImpl implements MeetingService {
             MeetingRequest.MeetingCreatePlace fixedPlace,
             LocalDateTime deadline) {
 
-        Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, null, deadline);
+        Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline);
         meetingRepository.save(newMeeting);
 
 
@@ -130,5 +131,19 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
         CandidatePlace newCandidatePlace = candidatePlaceMapper.toCandidatePlace(place, meeting, member);
         return candidatePlaceMapper.toMeetingAddCandidatePlace(newCandidatePlace);
+    }
+
+    @Override
+    public MeetingResponse.MeetingGetList getMeetingsByMeetingStatus(Member member, MeetingStatus meetingStatus) {
+        List<Meeting> meetings;
+        System.out.println(meetingStatus);
+        if (meetingStatus == null) {
+            meetings = meetingRepository.findMeetingsByMemberId(member.getId());
+        } else {
+            meetings = meetingRepository.findMeetingsByMemberIdAndMeetingStatus(member.getId(), meetingStatus);
+        }
+        return meetingMapper.toMeetingGetList(meetings.stream()
+                        .map(meetingMapper::toMeetingGetListMeetingInfo)
+                .toList());
     }
 }
