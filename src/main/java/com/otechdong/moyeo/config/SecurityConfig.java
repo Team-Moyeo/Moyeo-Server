@@ -55,6 +55,8 @@ public class SecurityConfig {
                         .requestMatchers("/members/sign-in").permitAll()
                         .requestMatchers("/test").authenticated()
                         .requestMatchers("/members/**").authenticated()
+                        .requestMatchers("/meetings/**").authenticated()
+                        .requestMatchers("/places/**").authenticated()
                         .anyRequest().denyAll());
         http
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

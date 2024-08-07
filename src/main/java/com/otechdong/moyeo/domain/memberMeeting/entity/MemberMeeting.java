@@ -1,6 +1,8 @@
-package com.otechdong.moyeo.domain.member.entity;
+package com.otechdong.moyeo.domain.memberMeeting.entity;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
+import com.otechdong.moyeo.domain.member.entity.Member;
+import com.otechdong.moyeo.domain.member.entity.Role;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;

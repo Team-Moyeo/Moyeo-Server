@@ -5,6 +5,7 @@ import com.otechdong.moyeo.domain.time.entity.CandidateTime;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("deleted_at is null")
 public class Meeting extends BaseEntity {
 
     @Id
@@ -42,9 +44,10 @@ public class Meeting extends BaseEntity {
     @Column
     private LocalTime endTime;
 
-    @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private List<CandidateTime> fixedTimeDates = new ArrayList<>();
+    @CollectionTable(name = "fixed_time", joinColumns = @JoinColumn(name = "meeting_id"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<LocalDateTime> fixedTimes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
@@ -58,4 +61,16 @@ public class Meeting extends BaseEntity {
 
     @Column(nullable = false)
     private String inviteCode;
+
+    public void updateFixedPlace(Place fixedPlace) {
+        this.fixedPlace = fixedPlace;
+    }
+
+    public void updateFixedTime(List<LocalDateTime> fixedTimes) {
+        this.fixedTimes = fixedTimes;
+    }
+
+    public void updateInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
 }

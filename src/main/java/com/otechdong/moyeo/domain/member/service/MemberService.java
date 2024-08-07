@@ -15,4 +15,6 @@ public interface MemberService {
     MemberResponse.MemberGetMyProfile getMyProfile(Member member);
 
     MemberResponse.MemberUpdateMyProfile updateMyProfile(Member member, MemberRequest.MemberUpdateMyProfile request);
+
+    MemberResponse.MemberGetListByMeeting getMembersByMeeting(Long meetingId);
 }
