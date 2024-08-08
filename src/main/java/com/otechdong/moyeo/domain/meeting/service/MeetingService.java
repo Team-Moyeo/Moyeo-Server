@@ -35,4 +35,6 @@ public interface MeetingService {
     MeetingResponse.MeetingGetDetail getMeetingDetail(Member member, Long meetingId);
 
     MeetingResponse.MeetingVoteConfirm voteConfirm(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
+
+    MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
 }

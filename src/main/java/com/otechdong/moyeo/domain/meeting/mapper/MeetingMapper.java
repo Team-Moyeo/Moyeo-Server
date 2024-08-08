@@ -113,10 +113,19 @@ public class MeetingMapper {
                 .build();
     }
 
-    public MeetingResponse.MeetingVoteConfirm toMeetingVoteConfirm(List<Long> voteTimeIds, List<Long> votePlaceIds) {
+    public MeetingResponse.MeetingVoteConfirm toMeetingVoteConfirm(Long meetingId, List<Long> voteTimeIds, List<Long> votePlaceIds) {
         return MeetingResponse.MeetingVoteConfirm.builder()
+                .meetingId(meetingId)
                 .votePlaceIds(votePlaceIds)
                 .voteTimeIds(voteTimeIds)
+                .build();
+    }
+
+    public MeetingResponse.MeetingVoteUpdate toMeetingVoteUpdate(MeetingResponse.MeetingVoteConfirm meetingVoteConfirm) {
+        return MeetingResponse.MeetingVoteUpdate.builder()
+                .meetingId(meetingVoteConfirm.getMeetingId())
+                .voteTimeIds(meetingVoteConfirm.getVoteTimeIds())
+                .votePlaceIds(meetingVoteConfirm.getVotePlaceIds())
                 .build();
     }
 }

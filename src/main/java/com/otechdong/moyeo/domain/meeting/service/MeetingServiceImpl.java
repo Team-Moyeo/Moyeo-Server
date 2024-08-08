@@ -20,12 +20,14 @@ import com.otechdong.moyeo.domain.candidatePlace.mapper.CandidatePlaceMapper;
 import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
 import com.otechdong.moyeo.domain.place.repository.CandidatePlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;
+import com.otechdong.moyeo.domain.place.repository.VotePlaceRepository;
 import com.otechdong.moyeo.domain.place.service.PlaceService;
 import com.otechdong.moyeo.domain.place.service.VotePlaceService;
 import com.otechdong.moyeo.domain.time.entity.CandidateTime;
 import com.otechdong.moyeo.domain.time.entity.VoteTime;
 import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
 import com.otechdong.moyeo.domain.time.repository.CandidateTimeRepository;
+import com.otechdong.moyeo.domain.time.repository.VoteTimeRepository;
 import com.otechdong.moyeo.domain.time.service.CandidateTimeService;
 import com.otechdong.moyeo.domain.time.service.VoteTimeService;
 import com.otechdong.moyeo.global.exception.RestApiException;
@@ -52,6 +54,8 @@ public class MeetingServiceImpl implements MeetingService {
     private final CandidatePlaceRepository candidatePlaceRepository;
     private final CandidateTimeRepository candidateTimeRepository;
     private final MemberMeetingRepository memberMeetingRepository;
+    private final VoteTimeRepository voteTimeRepository;
+    private final VotePlaceRepository votePlaceRepository;
 
     private final MemberMeetingService memberMeetingService;
     private final CandidateTimeService candidateTimeService;
@@ -241,7 +245,35 @@ public class MeetingServiceImpl implements MeetingService {
             votePlaceIds.add(votePlace.getId());
         }
 
-        return meetingMapper.toMeetingVoteConfirm(voteTimeIds, votePlaceIds);
+        return meetingMapper.toMeetingVoteConfirm(meeting.getId(), voteTimeIds, votePlaceIds);
+    }
+
+    @Override
+    @Transactional
+    public MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
+
+        // 해당 모임에서 내가 한 투표 가져오기
+        List<VoteTime> voteTimes = voteTimeRepository.findByMemberMeeting(memberMeeting);
+        List<VotePlace> votePlaces = votePlaceRepository.findByMemberMeeting(memberMeeting);
+
+        System.out.println(voteTimes.size());
+        System.out.println(votePlaces.size());
+
+        // TODO : 추후에 효율적인 코드로 고쳐보기 -> 지금은 전부 삭제 및 다시 전부 재생성
+        for (VoteTime voteTime : voteTimes) {
+            voteTime.delete();
+        }
+
+        for (VotePlace votePlace : votePlaces) {
+            votePlace.delete();
+        }
+
+        return meetingMapper.toMeetingVoteUpdate(voteConfirm(member, meetingId, candidateTimeIds, candidatePlaceIds));
     }
 
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {

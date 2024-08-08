@@ -16,6 +16,12 @@ public interface VoteTimeRepository extends JpaRepository<VoteTime, Long> {
 
     Optional<VoteTime> findByMemberMeetingAndCandidateTime(MemberMeeting memberMeeting, CandidateTime candidateTime);
 
+
+    @Query("SELECT vt FROM VoteTime vt WHERE vt.memberMeeting = :memberMeeting AND vt.id IN :ids")
+    List<VoteTime> findByMemberMeetingAndIds(@Param("memberMeeting") MemberMeeting memberMeeting, @Param("ids") List<Long> ids);
+
+    List<VoteTime> findByMemberMeeting(MemberMeeting memberMeeting);
+
 //    @Query("SELECT vt FROM VoteTime vt LEFT JOIN vt.candidateTime ct WHERE ct.id IN :candidateTimeIds AND ct.meeting.id = :meetingId")
 //    List<VoteTime> findByMeetingIdsAndCandidateTimeIds(@Param("meetingId") Long meetingId, @Param("candidateTimeIds") List<Long> candidateTimeIds);
 }

@@ -81,4 +81,13 @@ public class MeetingController {
     ) {
         return BaseResponse.onSuccess(meetingService.voteConfirm(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
     }
+
+    @PostMapping("/{meetingId}/vote/update")
+    public BaseResponse<MeetingResponse.MeetingVoteUpdate> voteUpdate(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @RequestBody MeetingRequest.MeetingVoteUpdate request
+    ) {
+        return BaseResponse.onSuccess(meetingService.voteUpdate(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
+    }
 }

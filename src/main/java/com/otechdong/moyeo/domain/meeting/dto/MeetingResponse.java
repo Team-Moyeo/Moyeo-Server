@@ -109,6 +109,7 @@ public class MeetingResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MeetingVoteConfirm {
+        private Long meetingId;
         private List<Long> votePlaceIds;
         private List<Long> voteTimeIds;
     }
@@ -120,5 +121,15 @@ public class MeetingResponse {
     @NoArgsConstructor
     public static class MeetingDeleteCandidatePlace {
         private Long candidatePlaceId;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingVoteUpdate {
+        private Long meetingId;
+        private List<Long> votePlaceIds;
+        private List<Long> voteTimeIds;
     }
 }

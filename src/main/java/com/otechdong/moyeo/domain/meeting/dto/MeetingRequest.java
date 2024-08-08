@@ -57,4 +57,13 @@ public class MeetingRequest {
         private List<Long> candidateTimeIds;
         private List<Long> candidatePlaceIds;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingVoteUpdate {
+        private List<Long> candidateTimeIds;
+        private List<Long> candidatePlaceIds;
+    }
 }
