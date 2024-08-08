@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.place.mapper;
+package com.otechdong.moyeo.domain.candidatePlace.mapper;
 
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
@@ -21,6 +21,12 @@ public class CandidatePlaceMapper {
 
     public MeetingResponse.MeetingAddCandidatePlace toMeetingAddCandidatePlace(CandidatePlace candidatePlace) {
         return MeetingResponse.MeetingAddCandidatePlace.builder()
+                .candidatePlaceId(candidatePlace.getId())
+                .build();
+    }
+
+    public MeetingResponse.MeetingDeleteCandidatePlace toMeetingDeleteCandidatePlace(CandidatePlace candidatePlace) {
+        return MeetingResponse.MeetingDeleteCandidatePlace.builder()
                 .candidatePlaceId(candidatePlace.getId())
                 .build();
     }

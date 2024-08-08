@@ -6,10 +6,7 @@ import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +22,14 @@ public class CandidatePlaceController {
             @PathVariable(value = "placeId") Long placeId
     ) {
         return BaseResponse.onSuccess(candidatePlaceService.addCandidatePlace(member, meetingId, placeId));
+    }
+
+    @DeleteMapping("/{meetingId}/{candidatePlaceId}")
+    public BaseResponse<MeetingResponse.MeetingDeleteCandidatePlace> deleteCandidatePlace(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @PathVariable(value = "candidatePlaceId") Long candidatePlaceId
+    ) {
+        return BaseResponse.onSuccess(candidatePlaceService.deleteCandidatePlace(member, meetingId, candidatePlaceId));
     }
 }

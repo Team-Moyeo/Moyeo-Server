@@ -16,7 +16,7 @@ import com.otechdong.moyeo.domain.memberMeeting.service.MemberMeetingService;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.domain.place.entity.VotePlace;
-import com.otechdong.moyeo.domain.place.mapper.CandidatePlaceMapper;
+import com.otechdong.moyeo.domain.candidatePlace.mapper.CandidatePlaceMapper;
 import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
 import com.otechdong.moyeo.domain.place.repository.CandidatePlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;

@@ -1,6 +1,7 @@
 package com.otechdong.moyeo.domain.place.repository;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
+import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.domain.time.entity.CandidateTime;
@@ -8,6 +9,7 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +23,8 @@ public interface CandidatePlaceRepository extends JpaRepository<CandidatePlace, 
     Optional<CandidatePlace> findByMeetingAndPlace(Meeting meeting, Place place);
 
     Boolean existsByMeetingAndPlace(Meeting meeting, Place place);
+
+    Optional<CandidatePlace> findByMeetingAndMember(Meeting meeting, Member member);
+
+    Optional<CandidatePlace> findByMeetingIdAndId(Long meetingId, Long candidatePlaceId);
 }

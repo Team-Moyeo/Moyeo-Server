@@ -8,4 +8,9 @@ public interface CandidatePlaceService {
             Member member,
             Long meetingId,
             Long placeId);
+
+    MeetingResponse.MeetingDeleteCandidatePlace deleteCandidatePlace(
+            Member member,
+            Long meetingId,
+            Long candidatePlaceId);
 }

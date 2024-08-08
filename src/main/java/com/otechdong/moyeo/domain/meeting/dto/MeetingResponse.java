@@ -112,4 +112,13 @@ public class MeetingResponse {
         private List<Long> votePlaceIds;
         private List<Long> voteTimeIds;
     }
+
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingDeleteCandidatePlace {
+        private Long candidatePlaceId;
+    }
 }
