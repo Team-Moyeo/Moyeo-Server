@@ -4,12 +4,14 @@ import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("deleted_at is null")
 public class VotePlace extends BaseEntity {
 
     @Id

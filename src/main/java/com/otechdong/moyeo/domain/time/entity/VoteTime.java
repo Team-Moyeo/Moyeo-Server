@@ -5,12 +5,14 @@ import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("deleted_at is null")
 public class VoteTime extends BaseEntity {
 
     @Id

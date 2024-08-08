@@ -4,12 +4,14 @@ import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("deleted_at is null")
 public class Place extends BaseEntity {
 
     @Id
