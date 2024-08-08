@@ -52,11 +52,13 @@ public class MeetingServiceImpl implements MeetingService {
     private final CandidatePlaceRepository candidatePlaceRepository;
     private final CandidateTimeRepository candidateTimeRepository;
     private final MemberMeetingRepository memberMeetingRepository;
+
     private final MemberMeetingService memberMeetingService;
     private final CandidateTimeService candidateTimeService;
     private final VoteTimeService voteTimeService;
     private final VotePlaceService votePlaceService;
     private final PlaceService placeService;
+
     private final MeetingMapper meetingMapper;
     private final CandidatePlaceMapper candidatePlaceMapper;
     private final TimeMapper timeMapper;
@@ -141,23 +143,6 @@ public class MeetingServiceImpl implements MeetingService {
         // TODO : 이 부분 구현하기
 
         return meetingMapper.toMeetingCreate(newMeeting);
-    }
-
-    @Override
-    public MeetingResponse.MeetingAddCandidatePlace addCandidatePlace(Member member, Long meetingId, Long placeId) {
-        Place place = placeRepository.findById(placeId)
-                .orElseThrow(() -> new RestApiException(PlaceErrorCode.PLACE_NOT_FOUND));
-        Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
-
-        // 이미 있으면 예외처리
-        if (candidatePlaceRepository.existsByMeetingAndPlace(meeting, place)) {
-            throw new RestApiException(CandidatePlaceErrorCode.CANDIDATE_PLACE_ALREADY_EXIST);
-        }
-        CandidatePlace newCandidatePlace = candidatePlaceMapper.toCandidatePlace(place, meeting, member);
-
-        candidatePlaceRepository.save(newCandidatePlace);
-        return candidatePlaceMapper.toMeetingAddCandidatePlace(newCandidatePlace);
     }
 
     @Override

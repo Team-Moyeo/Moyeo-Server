@@ -24,11 +24,6 @@ public interface MeetingService {
             MeetingRequest.MeetingCreatePlace fixedPlace,
             LocalDateTime deadline);
 
-    MeetingResponse.MeetingAddCandidatePlace addCandidatePlace(
-            Member member,
-            Long meetingId,
-            Long placeId);
-
     MeetingResponse.MeetingGetList getMeetingsByMeetingStatus(Member member, MeetingStatus meetingStatus);
 
     MeetingResponse.MeetingDelete deleteMeeting(Member member, Long meetingId);

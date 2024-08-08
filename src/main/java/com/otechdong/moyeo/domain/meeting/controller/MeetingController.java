@@ -34,15 +34,6 @@ public class MeetingController {
                 request.getDeadline()));
     }
 
-    @PostMapping("/{meetingId}/candidate-place/{placeId}")
-    public BaseResponse<MeetingResponse.MeetingAddCandidatePlace> addCandidatePlace(
-            @AuthenticationMember Member member,
-            @PathVariable(value = "meetingId") Long meetingId,
-            @PathVariable(value = "placeId") Long placeId
-    ) {
-        return BaseResponse.onSuccess(meetingService.addCandidatePlace(member, meetingId, placeId));
-    }
-
     @GetMapping
     public BaseResponse<MeetingResponse.MeetingGetList> getMeetingsByMeetingStatus(
             @AuthenticationMember Member member,
