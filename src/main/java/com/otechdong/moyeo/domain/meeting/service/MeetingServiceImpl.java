@@ -44,7 +44,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
@@ -150,7 +149,14 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new RestApiException(PlaceErrorCode.PLACE_NOT_FOUND));
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        // 이미 있으면 예외처리
+        if (candidatePlaceRepository.existsByMeetingAndPlace(meeting, place)) {
+            throw new RestApiException(CandidatePlaceErrorCode.CANDIDATE_PLACE_ALREADY_EXIST);
+        }
         CandidatePlace newCandidatePlace = candidatePlaceMapper.toCandidatePlace(place, meeting, member);
+
+        candidatePlaceRepository.save(newCandidatePlace);
         return candidatePlaceMapper.toMeetingAddCandidatePlace(newCandidatePlace);
     }
 
@@ -243,7 +249,7 @@ public class MeetingServiceImpl implements MeetingService {
         // TODO: 일치하는 CandidatePlace.id와 일치하지 않는 CandidatePlace.id가 같이 들어왔을 때, 일치하는 것만 반영됨 -> 에러로 처리할 것인지 고민
         List<CandidatePlace> candidatePlaces = candidatePlaceRepository.findByMeetingIdAndIds(meetingId, candidatePlaceIds);
         if (!candidatePlaceIds.isEmpty() && candidatePlaces.isEmpty()) {
-            throw new RestApiException(CandidatePlaceErrorCode.CANDIDATE_PACE_NOT_FOUND);
+            throw new RestApiException(CandidatePlaceErrorCode.CANDIDATE_PLACE_NOT_FOUND);
         }
         for (CandidatePlace candidatePlace : candidatePlaces) {
             VotePlace votePlace = votePlaceService.generateVotePlace(memberMeeting, candidatePlace);
