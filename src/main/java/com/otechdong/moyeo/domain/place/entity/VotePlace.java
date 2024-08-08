@@ -22,9 +22,9 @@ public class VotePlace extends BaseEntity {
     private MemberMeeting memberMeeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "candidate_time_id")
+    @JoinColumn(name = "candidate_place_id")
     private CandidatePlace candidatePlace;
 
-    @Column(nullable = false)
-    private Boolean isVoted;
+//    @Column(nullable = false)
+//    private Boolean isVoted;
 }

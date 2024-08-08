@@ -38,4 +38,6 @@ public interface MeetingService {
     MeetingResponse.MeetingGetInviteCode getInviteCode(Long meetingId);
 
     MeetingResponse.MeetingGetDetail getMeetingDetail(Member member, Long meetingId);
+
+    MeetingResponse.MeetingVoteConfirm voteConfirm(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
 }

@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CandidateTimeServiceImpl implements CandidateTimeService {
     private final CandidateTimeRepository candidateTimeRepository;
     private final TimeMapper timeMapper;

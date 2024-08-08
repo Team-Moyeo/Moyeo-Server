@@ -26,22 +26,15 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        // Log
-        System.out.println(authorization);
+
 //        토큰 분리
         String token = authorization.split(" ")[1];
-
-        // Log
-        System.out.println(token);
 
 //        토큰 만료 여부 확인
         if (jwtUtil.isExpired(token)) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        // Log
-        System.out.println(token);
 
 //        토큰에서 tokenType 추출
         String tokenType = jwtUtil.getTokenType(token);

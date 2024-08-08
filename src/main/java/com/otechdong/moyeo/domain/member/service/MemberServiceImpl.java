@@ -55,10 +55,6 @@ public class MemberServiceImpl implements MemberService {
 
         Optional<Member> optionalMember = memberRepository.findByClientId(clientId);
 
-        System.out.println("OptionalMember : " + optionalMember);
-        System.out.println("ClientId : " + clientId);
-        System.out.println("SocialType : " + socialType);
-
         // 1. 해당 유저가 존재하지 않으면 : Member 객체 생성하고 DB에 저장 -> 회원가입
         if (optionalMember.isEmpty()) {
             // TODO: 새로운 유저를 만들고 디비에 저장 & JWT Token 생성
@@ -144,12 +140,6 @@ public class MemberServiceImpl implements MemberService {
         MemberResponse.MemberTokens memberTokens = jwtUtil.refreshTokens(memberId, clientId, permissionRole);
 
         TokenInfo tokenInfo = authenticationMapper.toTokenInfo(memberTokens.getAccessToken(), memberTokens.getRefreshToken());
-
-        // log
-        System.out.println("MemberId : " + jwtUtil.getMemberId(memberTokens.getAccessToken()));
-        System.out.println("ClientId : " + jwtUtil.getClientId(memberTokens.getAccessToken()));
-        System.out.println("TokenType : " + jwtUtil.getTokenType(memberTokens.getAccessToken()));
-        System.out.println("PermissionRole : " + jwtUtil.getPermissionRole(memberTokens.getAccessToken()));
 
         return memberMapper.toMemberSignIn(member, tokenInfo, isServiced);
     }

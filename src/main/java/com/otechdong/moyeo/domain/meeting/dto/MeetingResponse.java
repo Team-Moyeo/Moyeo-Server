@@ -104,6 +104,12 @@ public class MeetingResponse {
     }
 
 
-
-
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingVoteConfirm {
+        private List<Long> votePlaceIds;
+        private List<Long> voteTimeIds;
+    }
 }
