@@ -21,6 +21,7 @@ import com.otechdong.moyeo.domain.place.repository.CandidatePlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;
 import com.otechdong.moyeo.domain.place.service.PlaceService;
 import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
+import com.otechdong.moyeo.domain.time.service.CandidateTimeService;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.MeetingErrorCode;
 import com.otechdong.moyeo.global.exception.errorCode.MemberMeetingErrorCode;
@@ -48,6 +49,7 @@ public class MeetingServiceImpl implements MeetingService {
     private final CandidatePlaceRepository candidatePlaceRepository;
     private final MemberMeetingRepository memberMeetingRepository;
     private final MemberMeetingService memberMeetingService;
+    private final CandidateTimeService candidateTimeService;
     private final PlaceService placeService;
     private final MeetingMapper meetingMapper;
     private final CandidatePlaceMapper candidatePlaceMapper;
@@ -78,6 +80,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline, inviteCode);
         meetingRepository.save(newMeeting);
+        candidateTimeService.generateCandidateTimes(newMeeting);
 
 
         // 입력받은 확정 장소가 있는 경우

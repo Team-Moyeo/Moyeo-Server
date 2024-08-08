@@ -31,13 +31,13 @@ public class TimeMapper {
 
     public CandidateTime toCandidateTime(
             Meeting meeting,
-            String date,
-            String time
+            LocalDate date,
+            LocalTime time
     ) {
         return CandidateTime.builder()
                 .meeting(meeting)
-                .date(LocalDate.parse(date))
-                .time(LocalTime.parse(time))
+                .date(date)
+                .time(time)
                 .voteCount(0)
                 .build();
     }
