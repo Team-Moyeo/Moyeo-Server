@@ -13,7 +13,6 @@ public class PlaceRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class PlaceCreate {
-        private Member member;
         private String title;
         private String address;
         private Double latitude;
