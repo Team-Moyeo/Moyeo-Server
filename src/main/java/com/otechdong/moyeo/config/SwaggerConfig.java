@@ -5,8 +5,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -18,6 +21,8 @@ public class SwaggerConfig {
                 .title("Moyeo API")
                 .description("모여 API 명세서");
 
+        Server server = new Server();
+        server.setUrl("https://5techdong.store");
         String jwt = "JWT";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt); // 헤더에 토큰 포함
         Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
@@ -27,10 +32,16 @@ public class SwaggerConfig {
                 .bearerFormat("JWT")
         );
 
+        List<Server> servers = List.of(
+                new Server().url("http://localhost:8080").description("Local development server"),
+                new Server().url("https://5techdong.store").description("Development server")
+        );
+
         return new OpenAPI()
                 .info(info)
                 .addSecurityItem(securityRequirement)
-                .components(components);
+                .components(components)
+                .servers(servers);
     }
 
 }
