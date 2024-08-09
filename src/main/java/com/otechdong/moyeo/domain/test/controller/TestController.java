@@ -3,6 +3,7 @@ package com.otechdong.moyeo.domain.test.controller;
 import com.otechdong.moyeo.config.AuthenticationMember;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

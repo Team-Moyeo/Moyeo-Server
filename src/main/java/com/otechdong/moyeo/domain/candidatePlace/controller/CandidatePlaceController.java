@@ -5,16 +5,20 @@ import com.otechdong.moyeo.domain.candidatePlace.service.CandidatePlaceService;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/candidate-place")
+@Tag(name = "후보 장소 API", description = "후보 장소 API 입니다.")
 public class CandidatePlaceController {
 
     private final CandidatePlaceService candidatePlaceService;
 
+    @Operation(summary = "후보 장소 등록 API", description = "후보 장소 등록 API 입니다.")
     @PostMapping("/{meetingId}/{placeId}")
     public BaseResponse<MeetingResponse.MeetingAddCandidatePlace> addCandidatePlace(
             @AuthenticationMember Member member,
@@ -24,6 +28,7 @@ public class CandidatePlaceController {
         return BaseResponse.onSuccess(candidatePlaceService.addCandidatePlace(member, meetingId, placeId));
     }
 
+    @Operation(summary = "후보 장소 삭제 API", description = "후보 장소 삭제 API 입니다.")
     @DeleteMapping("/{meetingId}/{candidatePlaceId}")
     public BaseResponse<MeetingResponse.MeetingDeleteCandidatePlace> deleteCandidatePlace(
             @AuthenticationMember Member member,
