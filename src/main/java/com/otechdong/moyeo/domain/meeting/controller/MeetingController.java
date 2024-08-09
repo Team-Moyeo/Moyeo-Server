@@ -34,15 +34,6 @@ public class MeetingController {
                 request.getDeadline()));
     }
 
-    @PostMapping("/{meetingId}/candidate-place/{placeId}")
-    public BaseResponse<MeetingResponse.MeetingAddCandidatePlace> addCandidatePlace(
-            @AuthenticationMember Member member,
-            @PathVariable(value = "meetingId") Long meetingId,
-            @PathVariable(value = "placeId") Long placeId
-    ) {
-        return BaseResponse.onSuccess(meetingService.addCandidatePlace(member, meetingId, placeId));
-    }
-
     @GetMapping
     public BaseResponse<MeetingResponse.MeetingGetList> getMeetingsByMeetingStatus(
             @AuthenticationMember Member member,
@@ -80,5 +71,23 @@ public class MeetingController {
             @PathVariable(value = "meetingId") Long meetingId
     ) {
         return BaseResponse.onSuccess(meetingService.getMeetingDetail(member, meetingId));
+    }
+
+    @PostMapping("/{meetingId}/vote")
+    public BaseResponse<MeetingResponse.MeetingVoteConfirm> voteConfirm(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @RequestBody MeetingRequest.MeetingVoteConfirm request
+    ) {
+        return BaseResponse.onSuccess(meetingService.voteConfirm(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
+    }
+
+    @PostMapping("/{meetingId}/vote/update")
+    public BaseResponse<MeetingResponse.MeetingVoteUpdate> voteUpdate(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @RequestBody MeetingRequest.MeetingVoteUpdate request
+    ) {
+        return BaseResponse.onSuccess(meetingService.voteUpdate(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
     }
 }

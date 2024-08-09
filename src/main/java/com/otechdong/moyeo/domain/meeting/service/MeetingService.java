@@ -24,11 +24,6 @@ public interface MeetingService {
             MeetingRequest.MeetingCreatePlace fixedPlace,
             LocalDateTime deadline);
 
-    MeetingResponse.MeetingAddCandidatePlace addCandidatePlace(
-            Member member,
-            Long meetingId,
-            Long placeId);
-
     MeetingResponse.MeetingGetList getMeetingsByMeetingStatus(Member member, MeetingStatus meetingStatus);
 
     MeetingResponse.MeetingDelete deleteMeeting(Member member, Long meetingId);
@@ -38,4 +33,8 @@ public interface MeetingService {
     MeetingResponse.MeetingGetInviteCode getInviteCode(Long meetingId);
 
     MeetingResponse.MeetingGetDetail getMeetingDetail(Member member, Long meetingId);
+
+    MeetingResponse.MeetingVoteConfirm voteConfirm(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
+
+    MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
 }

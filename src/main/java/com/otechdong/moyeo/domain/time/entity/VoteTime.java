@@ -1,15 +1,18 @@
 package com.otechdong.moyeo.domain.time.entity;
 
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
+import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("deleted_at is null")
 public class VoteTime extends BaseEntity {
 
     @Id
@@ -25,6 +28,11 @@ public class VoteTime extends BaseEntity {
     @JoinColumn(name = "candidate_time_id")
     private CandidateTime candidateTime;
 
-    @Column(nullable = false)
-    private Boolean isVoted;
+//    @Column(nullable = false)
+//    private Boolean isVoted;
+//
+//    public void updateIsVoted(Boolean isVoted) {
+//        this.isVoted = isVoted;
+//    }
+
 }

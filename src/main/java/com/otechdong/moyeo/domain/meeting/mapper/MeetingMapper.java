@@ -5,7 +5,9 @@ import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
+import com.otechdong.moyeo.domain.place.entity.VotePlace;
 import com.otechdong.moyeo.domain.time.entity.CandidateTime;
+import com.otechdong.moyeo.domain.time.entity.VoteTime;
 import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
 import org.springframework.stereotype.Component;
 
@@ -108,6 +110,22 @@ public class MeetingMapper {
                 .totalTimeTable(totalTimeTable)
                 .candidatePlaces(candidatePlaces)
                 .numberOfPeople(meeting.getNumberOfPeople())
+                .build();
+    }
+
+    public MeetingResponse.MeetingVoteConfirm toMeetingVoteConfirm(Long meetingId, List<Long> voteTimeIds, List<Long> votePlaceIds) {
+        return MeetingResponse.MeetingVoteConfirm.builder()
+                .meetingId(meetingId)
+                .votePlaceIds(votePlaceIds)
+                .voteTimeIds(voteTimeIds)
+                .build();
+    }
+
+    public MeetingResponse.MeetingVoteUpdate toMeetingVoteUpdate(MeetingResponse.MeetingVoteConfirm meetingVoteConfirm) {
+        return MeetingResponse.MeetingVoteUpdate.builder()
+                .meetingId(meetingVoteConfirm.getMeetingId())
+                .voteTimeIds(meetingVoteConfirm.getVoteTimeIds())
+                .votePlaceIds(meetingVoteConfirm.getVotePlaceIds())
                 .build();
     }
 }

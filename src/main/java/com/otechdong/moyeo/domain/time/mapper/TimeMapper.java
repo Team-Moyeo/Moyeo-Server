@@ -2,7 +2,9 @@ package com.otechdong.moyeo.domain.time.mapper;
 
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
+import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
 import com.otechdong.moyeo.domain.time.entity.CandidateTime;
+import com.otechdong.moyeo.domain.time.entity.VoteTime;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -31,14 +33,24 @@ public class TimeMapper {
 
     public CandidateTime toCandidateTime(
             Meeting meeting,
-            String date,
-            String time
+            LocalDate date,
+            LocalTime time
     ) {
         return CandidateTime.builder()
                 .meeting(meeting)
-                .date(LocalDate.parse(date))
-                .time(LocalTime.parse(time))
+                .date(date)
+                .time(time)
                 .voteCount(0)
+                .build();
+    }
+
+    public VoteTime toVoteTime(
+            MemberMeeting memberMeeting,
+            CandidateTime candidateTime
+    ) {
+        return VoteTime.builder()
+                .memberMeeting(memberMeeting)
+                .candidateTime(candidateTime)
                 .build();
     }
 
