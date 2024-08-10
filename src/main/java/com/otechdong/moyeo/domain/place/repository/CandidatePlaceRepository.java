@@ -4,12 +4,10 @@ import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

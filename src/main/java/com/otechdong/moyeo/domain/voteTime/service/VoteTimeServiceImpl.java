@@ -1,20 +1,15 @@
-package com.otechdong.moyeo.domain.time.service;
+package com.otechdong.moyeo.domain.voteTime.service;
 
-import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
-import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
-import com.otechdong.moyeo.domain.time.repository.VoteTimeRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.voteTime.entity.VoteTime;
+import com.otechdong.moyeo.domain.voteTime.mapper.TimeMapper;
+import com.otechdong.moyeo.domain.voteTime.repository.VoteTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

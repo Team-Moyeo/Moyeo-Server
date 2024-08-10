@@ -5,7 +5,6 @@ import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.VotePlace;
 import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
 import com.otechdong.moyeo.domain.place.repository.VotePlaceRepository;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,8 +1,8 @@
-package com.otechdong.moyeo.domain.time.repository;
+package com.otechdong.moyeo.domain.voteTime.repository;
 
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.voteTime.entity.VoteTime;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

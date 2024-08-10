@@ -1,7 +1,7 @@
-package com.otechdong.moyeo.domain.time.service;
+package com.otechdong.moyeo.domain.candidateTime.service;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

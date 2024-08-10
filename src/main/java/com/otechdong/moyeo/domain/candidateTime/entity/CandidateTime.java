@@ -1,4 +1,4 @@
-package com.otechdong.moyeo.domain.time.entity;
+package com.otechdong.moyeo.domain.candidateTime.entity;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.global.common.BaseEntity;

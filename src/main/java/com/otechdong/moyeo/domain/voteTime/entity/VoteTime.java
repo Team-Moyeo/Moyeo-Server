@@ -1,7 +1,7 @@
-package com.otechdong.moyeo.domain.time.entity;
+package com.otechdong.moyeo.domain.voteTime.entity;
 
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
-import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

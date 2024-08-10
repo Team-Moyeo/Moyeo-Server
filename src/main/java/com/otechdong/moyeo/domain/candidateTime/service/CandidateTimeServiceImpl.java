@@ -1,9 +1,10 @@
-package com.otechdong.moyeo.domain.time.service;
+package com.otechdong.moyeo.domain.candidateTime.service;
 
+import com.otechdong.moyeo.domain.candidateTime.mapper.CandidateMapper;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
-import com.otechdong.moyeo.domain.time.repository.CandidateTimeRepository;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.voteTime.mapper.TimeMapper;
+import com.otechdong.moyeo.domain.candidateTime.repository.CandidateTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CandidateTimeServiceImpl implements CandidateTimeService {
     private final CandidateTimeRepository candidateTimeRepository;
     private final TimeMapper timeMapper;
+    private final CandidateMapper candidateMapper;
 
 
     @Override
@@ -29,7 +31,7 @@ public class CandidateTimeServiceImpl implements CandidateTimeService {
         while (!currentDate.isAfter(meeting.getEndDate())) {
             LocalTime currentTime = meeting.getStartTime();
             while (!currentTime.isAfter(meeting.getEndTime())) {
-                CandidateTime candidateTime = timeMapper.toCandidateTime(meeting, currentDate, currentTime);
+                CandidateTime candidateTime = candidateMapper.toCandidateTime(meeting, currentDate, currentTime);
                 candidateTimes.add(candidateTime);
 
                 // 시간 간격을 30분 단위로 설정
@@ -54,7 +56,7 @@ public class CandidateTimeServiceImpl implements CandidateTimeService {
         while (!currentTime.isAfter(meeting.getEndTime())) {
             LocalDate currentDate = meeting.getStartDate();
             while (!currentDate.isAfter(meeting.getEndDate())) {
-                CandidateTime candidateTime = timeMapper.toCandidateTime(meeting, currentDate, currentTime);
+                CandidateTime candidateTime = candidateMapper.toCandidateTime(meeting, currentDate, currentTime);
                 candidateTimes.add(candidateTime);
 
                 // 다음 날짜로 이동

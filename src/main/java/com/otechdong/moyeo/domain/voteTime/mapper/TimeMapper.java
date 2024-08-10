@@ -1,17 +1,12 @@
-package com.otechdong.moyeo.domain.time.mapper;
+package com.otechdong.moyeo.domain.voteTime.mapper;
 
-import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
-import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.voteTime.entity.VoteTime;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Component
 public class TimeMapper {
@@ -31,18 +26,6 @@ public class TimeMapper {
         return localDateTime;
     }
 
-    public CandidateTime toCandidateTime(
-            Meeting meeting,
-            LocalDate date,
-            LocalTime time
-    ) {
-        return CandidateTime.builder()
-                .meeting(meeting)
-                .date(date)
-                .time(time)
-                .voteCount(0)
-                .build();
-    }
 
     public VoteTime toVoteTime(
             MemberMeeting memberMeeting,

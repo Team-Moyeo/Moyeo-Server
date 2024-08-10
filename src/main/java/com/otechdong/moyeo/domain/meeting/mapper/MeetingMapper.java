@@ -3,19 +3,14 @@ package com.otechdong.moyeo.domain.meeting.mapper;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
-import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
-import com.otechdong.moyeo.domain.place.entity.VotePlace;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
-import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
+import com.otechdong.moyeo.domain.voteTime.mapper.TimeMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 public class MeetingMapper {

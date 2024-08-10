@@ -3,8 +3,6 @@ package com.otechdong.moyeo.domain.place.repository;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
 import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.VotePlace;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
