@@ -40,4 +40,6 @@ public interface MeetingService {
     MeetingResponse.MeetingVoteConfirm voteConfirmWithValues(Member member, Long meetingId, List<String> candidateTimeValues, List<String> candidatePlaceValues);
 
     MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
+
+    MeetingResponse.MeetingVoteUpdate voteUpdateWithValues(Member member, Long meetingId, List<String> candidateTimes, List<String> candidatePlaces);
 }

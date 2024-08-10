@@ -29,6 +29,7 @@ public class VotePlaceServiceImpl implements VotePlaceService {
         }
         // 없으면 새로운 투표 생성.
         VotePlace votePlace = placeMapper.toVotePlace(memberMeeting, candidatePlace);
+        candidatePlace.increaseVoteCount();
         votePlaceRepository.save(votePlace);
         return votePlace;
     }

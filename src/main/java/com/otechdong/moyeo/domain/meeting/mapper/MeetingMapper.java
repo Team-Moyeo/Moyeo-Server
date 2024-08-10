@@ -128,4 +128,12 @@ public class MeetingMapper {
                 .votePlaceIds(meetingVoteConfirm.getVotePlaceIds())
                 .build();
     }
+
+//    public MeetingResponse.MeetingVoteUpdateWithValues toMeetingVoteUpdateWithValues(MeetingResponse.MeetingVoteConfirm meetingVoteConfirm) {
+//        return MeetingResponse.MeetingVoteUpdateWithValues.builder()
+//                .meetingId(meetingVoteConfirm.getMeetingId())
+//                .voteTimeIds(meetingVoteConfirm.getVoteTimeIds())
+//                .votePlaceIds(meetingVoteConfirm.getVotePlaceIds())
+//                .build();
+//    }
 }

@@ -34,4 +34,12 @@ public class CandidateTime extends BaseEntity {
 
     @Column(nullable = false)
     private Integer voteCount = 0;
+
+    public void increaseVoteCount() {
+        this.voteCount += 1;
+    }
+
+    public void decreaseVoteCount() {
+        this.voteCount -= 1;
+    }
 }
