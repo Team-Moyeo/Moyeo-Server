@@ -18,6 +18,9 @@ public interface CandidatePlaceRepository extends JpaRepository<CandidatePlace, 
     @Query("SELECT cp FROM CandidatePlace cp WHERE cp.id IN :ids AND cp.meeting.id = :meetingId")
     List<CandidatePlace> findByMeetingIdAndIds(@Param("meetingId") Long meetingId, @Param("ids") List<Long> ids);
 
+    @Query("SELECT cp FROM CandidatePlace cp WHERE cp.place.title IN :values AND cp.meeting.id = :meetingId")
+    List<CandidatePlace> findByMeetingIdAndValues(@Param("meetingId") Long meetingId, @Param("ids") List<String> values);
+
     List<CandidatePlace> findByMeetingId(Long meetingId);
 
     Optional<CandidatePlace> findByMeetingAndPlace(Meeting meeting, Place place);
