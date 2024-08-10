@@ -121,4 +121,13 @@ public class MeetingController {
     ) {
         return BaseResponse.onSuccess(meetingService.fixMeeting(member, meetingId, request.getFixedTimes(), request.getFixedPlace()));
     }
+
+    @Operation(summary = "모임 결과 조회 API", description = "모임 결과 조회 API 입니다.")
+    @GetMapping("/{meetingId}/result")
+    public BaseResponse<MeetingResponse.MeetingGetResult> getMeetingResult(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId
+    ) {
+        return BaseResponse.onSuccess(meetingService.getMeetingResult(meetingId));
+    }
 }

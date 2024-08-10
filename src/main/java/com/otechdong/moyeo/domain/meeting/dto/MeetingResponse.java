@@ -149,4 +149,14 @@ public class MeetingResponse {
     public static class MeetingFix {
         private Long meetingId;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingGetResult {
+        private String title;
+        private List<String> fixedTimes;
+        private String fixedPlace;
+    }
 }
