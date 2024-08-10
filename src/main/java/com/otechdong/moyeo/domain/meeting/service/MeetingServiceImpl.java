@@ -204,13 +204,11 @@ public class MeetingServiceImpl implements MeetingService {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
 
-        // TODO : 실제 데이터 연산 구현
-        List<LocalDateTime> myCandidateTimes = new ArrayList<>();
-        List<Double> totalTimeTable = new ArrayList<>();
-        List<Place> candidateInfos = new ArrayList<>();
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
 
 
-        return meetingMapper.toMeetingGetDetail(meeting, myCandidateTimes, totalTimeTable, null);
+        return meetingMapper.toMeetingGetDetail(meeting, memberMeeting);
     }
 
     @Override

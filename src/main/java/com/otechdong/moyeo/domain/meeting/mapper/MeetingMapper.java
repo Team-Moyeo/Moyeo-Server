@@ -3,6 +3,8 @@ package com.otechdong.moyeo.domain.meeting.mapper;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
+import com.otechdong.moyeo.domain.member.entity.Member;
+import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.domain.voteTime.mapper.TimeMapper;
 import org.springframework.stereotype.Component;
@@ -89,21 +91,16 @@ public class MeetingMapper {
     }
 
     public MeetingResponse.MeetingGetDetail toMeetingGetDetail(
-            Meeting meeting,
-            List<LocalDateTime> myCandidateTimes,
-            List<Double> totalTimeTable,
-            List<MeetingResponse.MeetingGetDetailCandidatePlace> candidatePlaces
+            Meeting meeting, MemberMeeting memberMeeting
     ) {
         return MeetingResponse.MeetingGetDetail.builder()
                 .title(meeting.getTitle())
+                .myRole(memberMeeting.getRole())
                 .startDate(meeting.getStartDate())
                 .endDate(meeting.getEndDate())
                 .startTime(meeting.getStartTime())
                 .endTime(meeting.getEndTime())
                 .deadline(meeting.getDeadline())
-                .myCandidateTimes(myCandidateTimes)
-                .totalTimeTable(totalTimeTable)
-                .candidatePlaces(candidatePlaces)
                 .numberOfPeople(meeting.getNumberOfPeople())
                 .build();
     }
