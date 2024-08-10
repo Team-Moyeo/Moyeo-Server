@@ -69,6 +69,14 @@ public class Meeting extends BaseEntity {
         this.fixedTimes = fixedTimes;
     }
 
+    public void increaseNumberOfPeople() {
+        this.numberOfPeople += numberOfPeople;
+    }
+
+    public void decreaseNumberOfPeople() {
+        this.numberOfPeople -= numberOfPeople;
+    }
+
     public void updateInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
     }

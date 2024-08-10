@@ -5,7 +5,9 @@ import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
 import com.otechdong.moyeo.domain.voteTime.entity.VoteTime;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -21,9 +23,19 @@ public class TimeMapper {
             throw new IllegalArgumentException("Date and time must not be null");
         }
 
-        LocalDateTime localDateTime = LocalDateTime.parse(date + "T" + time);
+        LocalDateTime localDateTime = LocalDateTime.parse(date + " " + time);
 
         return localDateTime;
+    }
+
+    public String toLocalDateTimeString(
+            LocalDate date,
+            LocalTime time) {
+        if (date == null || time == null) {
+            throw new IllegalArgumentException("Date and time must not be null");
+        }
+
+        return date.toString() + " " + time.toString();
     }
 
 

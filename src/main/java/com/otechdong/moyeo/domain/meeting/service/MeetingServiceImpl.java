@@ -186,6 +186,7 @@ public class MeetingServiceImpl implements MeetingService {
             throw new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_ALREADY_EXIST);
         }
         MemberMeeting memberMeeting = memberMeetingMapper.toMemberMeeting(member, meeting, Role.PARTICIPANTS);
+        meeting.increaseNumberOfPeople();
         memberMeetingRepository.save(memberMeeting);
         return meetingMapper.toMeetingJoinWithInviteCode(meeting);
     }
