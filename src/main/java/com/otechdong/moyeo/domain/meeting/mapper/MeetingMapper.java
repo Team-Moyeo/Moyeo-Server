@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 
 @Component
@@ -124,6 +126,22 @@ public class MeetingMapper {
     public MeetingResponse.MeetingFix toFixMeeting(Meeting meeting) {
         return MeetingResponse.MeetingFix.builder()
                 .meetingId(meeting.getId())
+                .build();
+    }
+
+    public MeetingResponse.MeetingGetResult toMeetingGetResult(Meeting meeting) {
+        return MeetingResponse.MeetingGetResult.builder()
+                .title(meeting.getTitle())
+                .fixedTimes(meeting.getFixedTimes()
+                        .stream()
+                        .map(fixedTime -> fixedTime.format(
+                                new DateTimeFormatterBuilder()
+                                .appendPattern("yyyy-MM-dd HH:mm")
+                                .optionalStart()
+                                .appendPattern(":ss")
+                                .optionalEnd()
+                                .toFormatter())).toList())
+                .fixedPlace(meeting.getFixedPlace() != null ? meeting.getFixedPlace().getTitle() : "")
                 .build();
     }
 

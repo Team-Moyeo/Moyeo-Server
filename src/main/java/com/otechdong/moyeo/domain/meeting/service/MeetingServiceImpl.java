@@ -399,6 +399,13 @@ public class MeetingServiceImpl implements MeetingService {
         return meetingMapper.toFixMeeting(meeting);
     }
 
+    @Override
+    public MeetingResponse.MeetingGetResult getMeetingResult(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+        return meetingMapper.toMeetingGetResult(meeting);
+    }
+
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {
         MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
                 .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
