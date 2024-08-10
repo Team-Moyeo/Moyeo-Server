@@ -65,7 +65,7 @@ public class Meeting extends BaseEntity {
         this.fixedPlace = fixedPlace;
     }
 
-    public void updateFixedTime(List<LocalDateTime> fixedTimes) {
+    public void updateFixedTimes(List<LocalDateTime> fixedTimes) {
         this.fixedTimes = fixedTimes;
     }
 

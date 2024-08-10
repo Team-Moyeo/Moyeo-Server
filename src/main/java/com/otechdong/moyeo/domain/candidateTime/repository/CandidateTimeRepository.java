@@ -2,6 +2,7 @@ package com.otechdong.moyeo.domain.candidateTime.repository;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.member.entity.Member;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,6 @@ public interface CandidateTimeRepository extends JpaRepository<CandidateTime, Lo
     Optional<CandidateTime> findByMeetingIdAndDateTime(@Param("meetingId") Long meetingId, @Param("date") LocalDate date, @Param("time") LocalTime time);
 
     List<CandidateTime> findByMeetingId(Long meetingId);
+
+    Boolean existsByMeetingAndDateAndTime(Meeting meeting, LocalDate date, LocalTime time);
 }

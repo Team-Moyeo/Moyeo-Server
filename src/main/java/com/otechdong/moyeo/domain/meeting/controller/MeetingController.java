@@ -111,4 +111,14 @@ public class MeetingController {
     ) {
         return BaseResponse.onSuccess(meetingService.voteUpdate(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
     }
+
+    @Operation(summary = "모임 확정 API", description = "모임 확정 API 입니다.")
+    @PostMapping("/{meetingId}/fix")
+    public BaseResponse<MeetingResponse.MeetingFix> fixMeeting(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @RequestBody MeetingRequest.MeetingFix request
+    ) {
+        return BaseResponse.onSuccess(meetingService.fixMeeting(member, meetingId, request.getFixedTimes(), request.getFixedPlace()));
+    }
 }

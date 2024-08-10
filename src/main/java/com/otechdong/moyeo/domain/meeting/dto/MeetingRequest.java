@@ -75,4 +75,24 @@ public class MeetingRequest {
         private List<Long> candidateTimeIds;
         private List<Long> candidatePlaceIds;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingFix {
+        private List<String> fixedTimes;
+        private FixPlaceInfo fixedPlace;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FixPlaceInfo {
+        private String title;
+        private String address;
+        private Double latitude;
+        private Double longitude;
+    }
 }

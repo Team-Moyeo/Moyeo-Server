@@ -109,7 +109,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         // 입력받은 확정 시간이 있는 경우
         if (fixedTimes != null) {
-            newMeeting.updateFixedTime(fixedTimes);
+            newMeeting.updateFixedTimes(fixedTimes);
         }
 
         // 입력받은 후보 장소가 있는 경우
@@ -355,6 +355,48 @@ public class MeetingServiceImpl implements MeetingService {
         }
 
         return meetingMapper.toMeetingVoteUpdate(voteConfirmWithValues(member, meetingId, candidateTimes, candidatePlaces));
+    }
+
+    @Override
+    @Transactional
+    public MeetingResponse.MeetingFix fixMeeting(Member member, Long meetingId, List<String> fixedTimes, MeetingRequest.FixPlaceInfo fixedPlace) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
+
+        // 모임 장이 아니면 에러 반환
+        if (!isOwnerOfMeeting(member, meeting)) {
+            throw new RestApiException(MeetingErrorCode.MEETING_ACCESS_DENIED);
+        }
+
+        List<LocalDateTime> newFixedTimes = fixedTimes
+                .stream()
+                .map(fixedTime -> {
+                    List<String> parts = List.of(fixedTime.split(" "));
+                    String date = parts.get(0);
+                    String time = parts.get(1);
+                    LocalDateTime localDateTime = timeMapper.toLocalDateTime(date, time);
+                    if (candidateTimeRepository.existsByMeetingAndDateAndTime(meeting, localDateTime.toLocalDate(), localDateTime.toLocalTime())) {
+                        return timeMapper.toLocalDateTime(date, time);
+                    } else {
+                        throw new RestApiException(CandidateTimeErrorCode.CANDIDATE_TIME_NOT_FOUND);
+                    }
+                })
+                .toList();
+
+        meeting.updateFixedTimes(newFixedTimes);
+
+        List<CandidatePlace> candidatePlaces = candidatePlaceRepository.findByMeetingId(meetingId);
+        for (CandidatePlace candidatePlace: candidatePlaces) {
+            Optional<Place> place = placeRepository.findByTitleAndAddressAndLatitudeAndLongitude(fixedPlace.getTitle(), fixedPlace.getAddress(), fixedPlace.getLatitude(), fixedPlace.getLongitude());
+            if (place.isPresent()) {
+                meeting.updateFixedPlace(place.get());
+            }
+        }
+
+
+        return meetingMapper.toFixMeeting(meeting);
     }
 
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {

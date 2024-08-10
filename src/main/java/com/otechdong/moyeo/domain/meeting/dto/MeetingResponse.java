@@ -141,4 +141,12 @@ public class MeetingResponse {
         private List<String> votePlaces;
         private List<String> voteTimes;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingFix {
+        private Long meetingId;
+    }
 }
