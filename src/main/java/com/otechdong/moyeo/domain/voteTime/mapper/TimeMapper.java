@@ -1,17 +1,14 @@
-package com.otechdong.moyeo.domain.time.mapper;
+package com.otechdong.moyeo.domain.voteTime.mapper;
 
-import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
-import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.voteTime.entity.VoteTime;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Component
 public class TimeMapper {
@@ -26,23 +23,21 @@ public class TimeMapper {
             throw new IllegalArgumentException("Date and time must not be null");
         }
 
-        LocalDateTime localDateTime = LocalDateTime.parse(date + "T" + time);
+        LocalDateTime localDateTime = LocalDateTime.parse(date + " " + time);
 
         return localDateTime;
     }
 
-    public CandidateTime toCandidateTime(
-            Meeting meeting,
+    public String toLocalDateTimeString(
             LocalDate date,
-            LocalTime time
-    ) {
-        return CandidateTime.builder()
-                .meeting(meeting)
-                .date(date)
-                .time(time)
-                .voteCount(0)
-                .build();
+            LocalTime time) {
+        if (date == null || time == null) {
+            throw new IllegalArgumentException("Date and time must not be null");
+        }
+
+        return date.toString() + " " + time.toString();
     }
+
 
     public VoteTime toVoteTime(
             MemberMeeting memberMeeting,

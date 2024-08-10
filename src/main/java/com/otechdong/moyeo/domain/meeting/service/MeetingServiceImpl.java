@@ -13,23 +13,23 @@ import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
 import com.otechdong.moyeo.domain.memberMeeting.mapper.MemberMeetingMapper;
 import com.otechdong.moyeo.domain.memberMeeting.repository.MemberMeetingRepository;
 import com.otechdong.moyeo.domain.memberMeeting.service.MemberMeetingService;
-import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
+import com.otechdong.moyeo.domain.candidatePlace.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import com.otechdong.moyeo.domain.place.entity.VotePlace;
 import com.otechdong.moyeo.domain.candidatePlace.mapper.CandidatePlaceMapper;
 import com.otechdong.moyeo.domain.place.mapper.PlaceMapper;
-import com.otechdong.moyeo.domain.place.repository.CandidatePlaceRepository;
+import com.otechdong.moyeo.domain.candidatePlace.repository.CandidatePlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.PlaceRepository;
 import com.otechdong.moyeo.domain.place.repository.VotePlaceRepository;
 import com.otechdong.moyeo.domain.place.service.PlaceService;
 import com.otechdong.moyeo.domain.place.service.VotePlaceService;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
-import com.otechdong.moyeo.domain.time.entity.VoteTime;
-import com.otechdong.moyeo.domain.time.mapper.TimeMapper;
-import com.otechdong.moyeo.domain.time.repository.CandidateTimeRepository;
-import com.otechdong.moyeo.domain.time.repository.VoteTimeRepository;
-import com.otechdong.moyeo.domain.time.service.CandidateTimeService;
-import com.otechdong.moyeo.domain.time.service.VoteTimeService;
+import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
+import com.otechdong.moyeo.domain.voteTime.entity.VoteTime;
+import com.otechdong.moyeo.domain.voteTime.mapper.TimeMapper;
+import com.otechdong.moyeo.domain.candidateTime.repository.CandidateTimeRepository;
+import com.otechdong.moyeo.domain.voteTime.repository.VoteTimeRepository;
+import com.otechdong.moyeo.domain.candidateTime.service.CandidateTimeService;
+import com.otechdong.moyeo.domain.voteTime.service.VoteTimeService;
 import com.otechdong.moyeo.global.exception.RestApiException;
 import com.otechdong.moyeo.global.exception.errorCode.*;
 import lombok.RequiredArgsConstructor;
@@ -186,6 +186,7 @@ public class MeetingServiceImpl implements MeetingService {
             throw new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_ALREADY_EXIST);
         }
         MemberMeeting memberMeeting = memberMeetingMapper.toMemberMeeting(member, meeting, Role.PARTICIPANTS);
+        meeting.increaseNumberOfPeople();
         memberMeetingRepository.save(memberMeeting);
         return meetingMapper.toMeetingJoinWithInviteCode(meeting);
     }
@@ -203,13 +204,11 @@ public class MeetingServiceImpl implements MeetingService {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
 
-        // TODO : 실제 데이터 연산 구현
-        List<LocalDateTime> myCandidateTimes = new ArrayList<>();
-        List<Double> totalTimeTable = new ArrayList<>();
-        List<Place> candidateInfos = new ArrayList<>();
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
 
 
-        return meetingMapper.toMeetingGetDetail(meeting, myCandidateTimes, totalTimeTable, null);
+        return meetingMapper.toMeetingGetDetail(meeting, memberMeeting);
     }
 
     @Override

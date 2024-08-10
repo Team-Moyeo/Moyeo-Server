@@ -1,7 +1,6 @@
 package com.otechdong.moyeo.domain.meeting.entity;
 
 import com.otechdong.moyeo.domain.place.entity.Place;
-import com.otechdong.moyeo.domain.time.entity.CandidateTime;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -68,6 +67,14 @@ public class Meeting extends BaseEntity {
 
     public void updateFixedTime(List<LocalDateTime> fixedTimes) {
         this.fixedTimes = fixedTimes;
+    }
+
+    public void increaseNumberOfPeople() {
+        this.numberOfPeople += numberOfPeople;
+    }
+
+    public void decreaseNumberOfPeople() {
+        this.numberOfPeople -= numberOfPeople;
     }
 
     public void updateInviteCode(String inviteCode) {

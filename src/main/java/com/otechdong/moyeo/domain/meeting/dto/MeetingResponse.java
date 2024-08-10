@@ -1,6 +1,7 @@
 package com.otechdong.moyeo.domain.meeting.dto;
 
 import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
+import com.otechdong.moyeo.domain.member.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -80,14 +81,12 @@ public class MeetingResponse {
     @NoArgsConstructor
     public static class MeetingGetDetail {
         private String title;
+        private Role myRole;
         private LocalDate startDate;
         private LocalDate endDate;
         private LocalTime startTime;
         private LocalTime endTime;
         private LocalDateTime deadline;
-        private List<LocalDateTime> myCandidateTimes;
-        private List<Double> totalTimeTable;
-        private List<MeetingGetDetailCandidatePlace> candidatePlaces;
         private Long numberOfPeople;
     }
 

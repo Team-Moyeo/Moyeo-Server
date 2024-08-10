@@ -1,7 +1,9 @@
 package com.otechdong.moyeo.domain.candidatePlace.controller;
 
 import com.otechdong.moyeo.config.AuthenticationMember;
+import com.otechdong.moyeo.domain.candidatePlace.dto.CandidatePlaceResponse;
 import com.otechdong.moyeo.domain.candidatePlace.service.CandidatePlaceService;
+import com.otechdong.moyeo.domain.candidateTime.dto.CandidateTimeResponse;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
 import com.otechdong.moyeo.global.common.BaseResponse;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/candidate-place")
+@RequestMapping("/candidate-places")
 @Tag(name = "후보 장소 API", description = "후보 장소 API 입니다.")
 public class CandidatePlaceController {
 
@@ -36,5 +38,14 @@ public class CandidatePlaceController {
             @PathVariable(value = "candidatePlaceId") Long candidatePlaceId
     ) {
         return BaseResponse.onSuccess(candidatePlaceService.deleteCandidatePlace(member, meetingId, candidatePlaceId));
+    }
+
+    @Operation(summary = "모임 상세 조회(장소) API", description = "모임 상세 조회(장소) API 입니다.")
+    @GetMapping("/{meetingId}")
+    public BaseResponse<CandidatePlaceResponse.CandidatePlaceGetMeetingDetail> getMeetingDetail(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId
+    ) {
+        return BaseResponse.onSuccess(candidatePlaceService.getMeetingDetail(member, meetingId));
     }
 }
