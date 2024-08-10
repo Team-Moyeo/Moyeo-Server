@@ -42,4 +42,6 @@ public interface MeetingService {
     MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
 
     MeetingResponse.MeetingVoteUpdate voteUpdateWithValues(Member member, Long meetingId, List<String> candidateTimes, List<String> candidatePlaces);
+
+    MeetingResponse.MeetingFix fixMeeting(Member member, Long meetingId, List<String> fixedTimes, MeetingRequest.FixPlaceInfo fixedPlace);
 }

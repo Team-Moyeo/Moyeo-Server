@@ -9,12 +9,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 @Component
 public class TimeMapper {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm")
+            .optionalStart()
+            .appendPattern(":ss")
+            .optionalEnd()
+            .toFormatter();
 
     public LocalDateTime toLocalDateTime(
             String date,
@@ -23,7 +31,7 @@ public class TimeMapper {
             throw new IllegalArgumentException("Date and time must not be null");
         }
 
-        LocalDateTime localDateTime = LocalDateTime.parse(date + " " + time);
+        LocalDateTime localDateTime = LocalDateTime.parse(date + " " + time, DATE_TIME_FORMATTER);
 
         return localDateTime;
     }

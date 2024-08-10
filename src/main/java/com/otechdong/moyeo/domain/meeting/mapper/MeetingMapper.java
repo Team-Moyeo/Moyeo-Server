@@ -121,6 +121,12 @@ public class MeetingMapper {
                 .build();
     }
 
+    public MeetingResponse.MeetingFix toFixMeeting(Meeting meeting) {
+        return MeetingResponse.MeetingFix.builder()
+                .meetingId(meeting.getId())
+                .build();
+    }
+
 //    public MeetingResponse.MeetingVoteUpdateWithValues toMeetingVoteUpdateWithValues(MeetingResponse.MeetingVoteConfirm meetingVoteConfirm) {
 //        return MeetingResponse.MeetingVoteUpdateWithValues.builder()
 //                .meetingId(meetingVoteConfirm.getMeetingId())
