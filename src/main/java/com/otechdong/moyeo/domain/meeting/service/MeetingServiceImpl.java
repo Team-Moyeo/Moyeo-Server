@@ -1,6 +1,5 @@
 package com.otechdong.moyeo.domain.meeting.service;
 
-import ch.qos.logback.core.joran.sanity.Pair;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
@@ -314,22 +313,49 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
 
         // 해당 모임에서 내가 한 투표 가져오기
-        List<VoteTime> voteTimes = voteTimeRepository.findByMemberMeeting(memberMeeting);
-        List<VotePlace> votePlaces = votePlaceRepository.findByMemberMeeting(memberMeeting);
-
-        System.out.println(voteTimes.size());
-        System.out.println(votePlaces.size());
+        List<VoteTime> myVoteTimes = voteTimeRepository.findByMemberMeeting(memberMeeting);
+        List<VotePlace> myVotePlaces = votePlaceRepository.findByMemberMeeting(memberMeeting);
 
         // TODO : 추후에 효율적인 코드로 고쳐보기 -> 지금은 전부 삭제 및 다시 전부 재생성
-        for (VoteTime voteTime : voteTimes) {
+        for (VoteTime voteTime : myVoteTimes) {
+            voteTime.getCandidateTime().decreaseVoteCount();
             voteTime.delete();
         }
 
-        for (VotePlace votePlace : votePlaces) {
+        for (VotePlace votePlace : myVotePlaces) {
+            votePlace.getCandidatePlace().decreaseVoteCount();
             votePlace.delete();
         }
 
         return meetingMapper.toMeetingVoteUpdate(voteConfirm(member, meetingId, candidateTimeIds, candidatePlaceIds));
+    }
+
+    // id값이 아니라 value기준으로 조회
+    @Override
+    @Transactional
+    public MeetingResponse.MeetingVoteUpdate voteUpdateWithValues(Member member, Long meetingId, List<String> candidateTimes, List<String> candidatePlaces) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
+
+        // 해당 모임에서 내가 한 투표 가져오기
+        List<VoteTime> myVoteTimes = voteTimeRepository.findByMemberMeeting(memberMeeting);
+        List<VotePlace> myVotePlaces = votePlaceRepository.findByMemberMeeting(memberMeeting);
+
+        // TODO : 추후에 효율적인 코드로 고쳐보기 -> 지금은 전부 삭제 및 다시 전부 재생성
+        for (VoteTime voteTime : myVoteTimes) {
+            voteTime.getCandidateTime().decreaseVoteCount();
+            voteTime.delete();
+        }
+
+        for (VotePlace votePlace : myVotePlaces) {
+            votePlace.getCandidatePlace().decreaseVoteCount();
+            votePlace.delete();
+        }
+
+        return meetingMapper.toMeetingVoteUpdate(voteConfirmWithValues(member, meetingId, candidateTimes, candidatePlaces));
     }
 
     public Boolean isOwnerOfMeeting(Member member, Meeting meeting) {

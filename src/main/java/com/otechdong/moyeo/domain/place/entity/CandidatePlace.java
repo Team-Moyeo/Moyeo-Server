@@ -37,4 +37,12 @@ public class CandidatePlace extends BaseEntity {
 
     @Column(nullable = false)
     private Integer voteCount;
+
+    public void increaseVoteCount() {
+        this.voteCount += 1;
+    }
+
+    public void decreaseVoteCount() {
+        this.voteCount -= 1;
+    }
 }

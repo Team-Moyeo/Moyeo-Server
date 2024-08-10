@@ -34,6 +34,7 @@ public class VoteTimeServiceImpl implements VoteTimeService{
         }
         // 없으면 새로운 투표 생성.
         VoteTime voteTime = timeMapper.toVoteTime(memberMeeting, candidateTime);
+        candidateTime.increaseVoteCount();
         voteTimeRepository.save(voteTime);
         return voteTime;
     }
