@@ -62,6 +62,15 @@ public class MeetingRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class MeetingVoteConfirmWithValue {
+        private List<String> candidateTimes;
+        private List<String> candidatePlaces;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class MeetingVoteUpdate {
         private List<Long> candidateTimeIds;
         private List<Long> candidatePlaceIds;

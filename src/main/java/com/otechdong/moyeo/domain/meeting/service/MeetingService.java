@@ -4,6 +4,7 @@ import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.MeetingStatus;
 import com.otechdong.moyeo.domain.member.entity.Member;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +36,8 @@ public interface MeetingService {
     MeetingResponse.MeetingGetDetail getMeetingDetail(Member member, Long meetingId);
 
     MeetingResponse.MeetingVoteConfirm voteConfirm(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
+
+    MeetingResponse.MeetingVoteConfirm voteConfirmWithValues(Member member, Long meetingId, List<String> candidateTimeValues, List<String> candidatePlaceValues);
 
     MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds);
 }

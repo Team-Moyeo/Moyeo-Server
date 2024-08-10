@@ -92,6 +92,16 @@ public class MeetingController {
         return BaseResponse.onSuccess(meetingService.voteConfirm(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
     }
 
+    @Operation(summary = "투표 확정 API", description = "투표 확정 API 입니다.")
+    @PostMapping("/{meetingId}/vote-values")
+    public BaseResponse<MeetingResponse.MeetingVoteConfirm> voteConfirmWithValues(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @RequestBody MeetingRequest.MeetingVoteConfirmWithValue request
+    ) {
+        return BaseResponse.onSuccess(meetingService.voteConfirmWithValues(member, meetingId, request.getCandidateTimes(), request.getCandidatePlaces()));
+    }
+
     @Operation(summary = "재투표 API", description = "재투표 API 입니다.")
     @PostMapping("/{meetingId}/vote/update")
     public BaseResponse<MeetingResponse.MeetingVoteUpdate> voteUpdate(

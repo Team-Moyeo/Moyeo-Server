@@ -20,5 +20,8 @@ public interface CandidateTimeRepository extends JpaRepository<CandidateTime, Lo
     @Query("SELECT ct FROM CandidateTime ct WHERE ct.id IN :ids AND ct.meeting.id = :meetingId")
     List<CandidateTime> findByMeetingIdAndIds(@Param("meetingId") Long meetingId, @Param("ids") List<Long> ids);
 
+    @Query("SELECT ct FROM CandidateTime ct WHERE ct.date = :date AND ct.time = :time AND ct.meeting.id = :meetingId")
+    Optional<CandidateTime> findByMeetingIdAndDateTime(@Param("meetingId") Long meetingId, @Param("date") LocalDate date, @Param("time") LocalTime time);
+
     List<CandidateTime> findByMeetingId(Long meetingId);
 }

@@ -1,5 +1,6 @@
 package com.otechdong.moyeo.domain.meeting.service;
 
+import ch.qos.logback.core.joran.sanity.Pair;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingRequest;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
@@ -92,7 +93,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         Meeting newMeeting = meetingMapper.toMeeting(title, startDate, startTime, endDate, endTime, null, null, deadline, inviteCode);
         meetingRepository.save(newMeeting);
-        List<CandidateTime> candidateTimes = candidateTimeService.generateCandidateTimes(newMeeting);
+        List<CandidateTime> candidateTimes = candidateTimeService.generateCandidateTimes2(newMeeting);
 
         // 입력받은 확정 장소가 있는 경우
         if (fixedPlace != null) {
@@ -249,6 +250,60 @@ public class MeetingServiceImpl implements MeetingService {
         return meetingMapper.toMeetingVoteConfirm(meeting.getId(), voteTimeIds, votePlaceIds);
     }
 
+    // id값이 아니라 value기준으로 조회
+    @Override
+    @Transactional
+    public MeetingResponse.MeetingVoteConfirm voteConfirmWithValues(Member member, Long meetingId, List<String> candidateTimeValues, List<String> candidatePlaceValues) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RestApiException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        MemberMeeting memberMeeting = memberMeetingRepository.findByMemberAndMeeting(member, meeting)
+                .orElseThrow(() -> new RestApiException(MemberMeetingErrorCode.MEMBER_MEETING_NOT_FOUND));
+
+        List<Long> voteTimeIds = new ArrayList<>();
+        List<Long> votePlaceIds = new ArrayList<>();
+
+        // 시간 투표 반영(CandidateTime.id & MemberMeeting.id가 일치하는 리스트를 찾아서 투표)
+        // TODO: 일치하는 CandidateTime.id와 일치하지 않는 CandidateTime.id가 같이 들어왔을 때, 일치하는 것만 반영됨 -> 에러로 처리할 것인지 고민
+
+        List<List<String>> dateTimeStrings = splitDateAndTimeList(candidateTimeValues);
+
+        List<String> dateStrings = dateTimeStrings.get(0);
+        List<String> timeStrings = dateTimeStrings.get(1);
+
+        List<CandidateTime> candidateTimes = new ArrayList<>();
+        for (int i = 0; i < candidateTimeValues.size(); i++) {
+            LocalDate date = LocalDate.parse(dateStrings.get(i));
+            LocalTime time = LocalTime.parse(timeStrings.get(i));
+
+            CandidateTime foundTime = candidateTimeRepository.findByMeetingIdAndDateTime(meetingId, date, time)
+                            .orElseThrow(() -> new RestApiException(CandidateTimeErrorCode.CANDIDATE_TIME_NOT_FOUND));
+
+            candidateTimes.add(foundTime);
+        }
+
+        if (!candidateTimeValues.isEmpty() && candidateTimes.isEmpty()) {
+            throw new RestApiException(CandidateTimeErrorCode.CANDIDATE_TIME_NOT_FOUND);
+        }
+        for (CandidateTime candidateTime : candidateTimes) {
+            VoteTime voteTime = voteTimeService.generateVoteTime(memberMeeting, candidateTime);
+            voteTimeIds.add(voteTime.getId());
+        }
+
+        // 장소 투표 반영(CandidatePlace.id & MemberMeeting.id가 일치하는 리스트를 찾아서 투표)
+        // TODO: 일치하는 CandidatePlace.id와 일치하지 않는 CandidatePlace.id가 같이 들어왔을 때, 일치하는 것만 반영됨 -> 에러로 처리할 것인지 고민
+        List<CandidatePlace> candidatePlaces = candidatePlaceRepository.findByMeetingIdAndValues(meetingId, candidatePlaceValues);
+        if (!candidatePlaceValues.isEmpty() && candidatePlaces.isEmpty()) {
+            throw new RestApiException(CandidatePlaceErrorCode.CANDIDATE_PLACE_NOT_FOUND);
+        }
+        for (CandidatePlace candidatePlace : candidatePlaces) {
+            VotePlace votePlace = votePlaceService.generateVotePlace(memberMeeting, candidatePlace);
+            votePlaceIds.add(votePlace.getId());
+        }
+
+        return meetingMapper.toMeetingVoteConfirm(meeting.getId(), voteTimeIds, votePlaceIds);
+    }
+
     @Override
     @Transactional
     public MeetingResponse.MeetingVoteUpdate voteUpdate(Member member, Long meetingId, List<Long> candidateTimeIds, List<Long> candidatePlaceIds) {
@@ -300,6 +355,21 @@ public class MeetingServiceImpl implements MeetingService {
     // 초대 코드 중복 검사 함수
     public Boolean existsDuplicatedInviteCode(String inviteCode) {
         return meetingRepository.existsByInviteCode(inviteCode);
+    }
+
+    public List<List<String>> splitDateAndTimeList(List<String> dateTimeList) {
+        List<String> dateStrings = new ArrayList<>();
+        List<String> timeStrings = new ArrayList<>();
+        List<List<String>> newList = new ArrayList<>();
+
+        for (String dateTime : dateTimeList) {
+            String[] parts = dateTime.split(" ");
+            dateStrings.add(parts[0]); // 날짜 부분
+            timeStrings.add(parts[1]); // 시간 부분
+        }
+        newList.add(dateStrings);
+        newList.add(timeStrings);
+        return newList;
     }
 
 }
