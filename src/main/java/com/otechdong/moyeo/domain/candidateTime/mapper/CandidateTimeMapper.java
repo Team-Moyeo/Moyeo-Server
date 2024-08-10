@@ -10,7 +10,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Component
-public class CandidateMapper {
+public class CandidateTimeMapper {
 
     public CandidateTime toCandidateTime(
             Meeting meeting,

@@ -1,7 +1,7 @@
 package com.otechdong.moyeo.domain.candidateTime.service;
 
 import com.otechdong.moyeo.domain.candidateTime.dto.CandidateTimeResponse;
-import com.otechdong.moyeo.domain.candidateTime.mapper.CandidateMapper;
+import com.otechdong.moyeo.domain.candidateTime.mapper.CandidateTimeMapper;
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.candidateTime.entity.CandidateTime;
 import com.otechdong.moyeo.domain.meeting.repository.MeetingRepository;
@@ -20,11 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class CandidateTimeServiceImpl implements CandidateTimeService {
     private final MeetingRepository meetingRepository;
     private final VoteTimeRepository voteTimeRepository;
     private final TimeMapper timeMapper;
-    private final CandidateMapper candidateMapper;
+    private final CandidateTimeMapper candidateMapper;
 
 
     @Override

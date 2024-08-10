@@ -1,5 +1,6 @@
 package com.otechdong.moyeo.domain.place.entity;
 
+import com.otechdong.moyeo.domain.candidatePlace.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.memberMeeting.entity.MemberMeeting;
 import com.otechdong.moyeo.global.common.BaseEntity;
 import jakarta.persistence.*;

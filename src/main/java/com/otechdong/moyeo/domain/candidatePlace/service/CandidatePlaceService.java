@@ -1,5 +1,6 @@
 package com.otechdong.moyeo.domain.candidatePlace.service;
 
+import com.otechdong.moyeo.domain.candidatePlace.dto.CandidatePlaceResponse;
 import com.otechdong.moyeo.domain.meeting.dto.MeetingResponse;
 import com.otechdong.moyeo.domain.member.entity.Member;
 
@@ -13,4 +14,6 @@ public interface CandidatePlaceService {
             Member member,
             Long meetingId,
             Long candidatePlaceId);
+
+    CandidatePlaceResponse.CandidatePlaceGetMeetingDetail getMeetingDetail(Member member, Long meetingId);
 }

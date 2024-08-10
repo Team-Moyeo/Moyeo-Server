@@ -1,8 +1,8 @@
-package com.otechdong.moyeo.domain.place.repository;
+package com.otechdong.moyeo.domain.candidatePlace.repository;
 
 import com.otechdong.moyeo.domain.meeting.entity.Meeting;
 import com.otechdong.moyeo.domain.member.entity.Member;
-import com.otechdong.moyeo.domain.place.entity.CandidatePlace;
+import com.otechdong.moyeo.domain.candidatePlace.entity.CandidatePlace;
 import com.otechdong.moyeo.domain.place.entity.Place;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
