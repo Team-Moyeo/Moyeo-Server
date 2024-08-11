@@ -62,7 +62,7 @@ public class MeetingRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MeetingVoteConfirmWithValue {
+    public static class MeetingVoteConfirmWithValues {
         private List<String> candidateTimes;
         private List<String> candidatePlaces;
     }
@@ -74,6 +74,15 @@ public class MeetingRequest {
     public static class MeetingVoteUpdate {
         private List<Long> candidateTimeIds;
         private List<Long> candidatePlaceIds;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeetingVoteUpdateWithValues {
+        private List<String> candidateTimes;
+        private List<String> candidatePlaces;
     }
 
     @Getter
@@ -95,4 +104,5 @@ public class MeetingRequest {
         private Double latitude;
         private Double longitude;
     }
+
 }
