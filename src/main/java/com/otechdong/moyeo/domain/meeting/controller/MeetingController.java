@@ -112,6 +112,16 @@ public class MeetingController {
         return BaseResponse.onSuccess(meetingService.voteUpdate(member, meetingId, request.getCandidateTimeIds(), request.getCandidatePlaceIds()));
     }
 
+    @Operation(summary = "재투표 API", description = "재투표 API 입니다.")
+    @PostMapping("/{meetingId}/vote/update-values")
+    public BaseResponse<MeetingResponse.MeetingVoteUpdate> voteUpdateWithValues(
+            @AuthenticationMember Member member,
+            @PathVariable(value = "meetingId") Long meetingId,
+            @RequestBody MeetingRequest.MeetingVoteUpdateWithValues request
+    ) {
+        return BaseResponse.onSuccess(meetingService.voteUpdateWithValues(member, meetingId, request.getCandidateTimes(), request.getCandidatePlaces()));
+    }
+
     @Operation(summary = "모임 확정 API", description = "모임 확정 API 입니다.")
     @PostMapping("/{meetingId}/fix")
     public BaseResponse<MeetingResponse.MeetingFix> fixMeeting(
@@ -131,13 +141,5 @@ public class MeetingController {
         return BaseResponse.onSuccess(meetingService.getMeetingResult(meetingId));
     }
 
-    @Operation(summary = "재투표 API", description = "재투표 API 입니다.")
-    @PostMapping("/{meetingId}/vote/update-values")
-    public BaseResponse<MeetingResponse.MeetingVoteUpdate> voteUpdateWithValues(
-            @AuthenticationMember Member member,
-            @PathVariable(value = "meetingId") Long meetingId,
-            @RequestBody MeetingRequest.MeetingVoteUpdateWithValues request
-    ) {
-        return BaseResponse.onSuccess(meetingService.voteUpdateWithValues(member, meetingId, request.getCandidateTimes(), request.getCandidatePlaces()));
-    }
+
 }
