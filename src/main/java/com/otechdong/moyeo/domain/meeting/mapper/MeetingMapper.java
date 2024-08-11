@@ -144,7 +144,6 @@ public class MeetingMapper {
                 .fixedPlace(meeting.getFixedPlace() != null ? meeting.getFixedPlace().getTitle() : "")
                 .build();
     }
-
 //    public MeetingResponse.MeetingVoteUpdateWithValues toMeetingVoteUpdateWithValues(MeetingResponse.MeetingVoteConfirm meetingVoteConfirm) {
 //        return MeetingResponse.MeetingVoteUpdateWithValues.builder()
 //                .meetingId(meetingVoteConfirm.getMeetingId())
