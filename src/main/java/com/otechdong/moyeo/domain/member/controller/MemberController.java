@@ -27,7 +27,7 @@ public class MemberController {
     }
 
     @Operation(summary = "마이 프로필 업데이트 API", description = "마이 프로필 조회 API 입니다.")
-    @GetMapping("/profile/update")
+    @PostMapping("/profile/update")
     public BaseResponse<MemberResponse.MemberUpdateMyProfile> updateMyProfile(
             @AuthenticationMember Member member,
             @RequestBody MemberRequest.MemberUpdateMyProfile request) {
