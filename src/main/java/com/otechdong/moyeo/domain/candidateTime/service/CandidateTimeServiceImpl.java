@@ -50,6 +50,13 @@ public class CandidateTimeServiceImpl implements CandidateTimeService {
                 // 시간 간격을 30분 단위로 설정
                 currentTime = currentTime.plusMinutes(30);
             }
+
+            // 만약 currentTime이 meeting.getEndTime()과 같다면 마지막 시간을 추가
+            if (currentTime.equals(meeting.getEndTime())) {
+                CandidateTime candidateTime = candidateMapper.toCandidateTime(meeting, currentDate, currentTime);
+                candidateTimes.add(candidateTime);
+            }
+
             // 다음 날짜로 이동
             currentDate = currentDate.plusDays(1);
         }
@@ -77,6 +84,11 @@ public class CandidateTimeServiceImpl implements CandidateTimeService {
             }
             // 다음 시간대 30분 추가
             currentTime = currentTime.plusMinutes(30);
+            if (currentTime.equals(meeting.getEndTime())) {
+                CandidateTime candidateTime = candidateMapper.toCandidateTime(meeting, meeting.getStartDate(), currentTime);
+                candidateTimes.add(candidateTime);
+                break;
+            }
         }
 
         // CandidateTime 리스트를 저장
