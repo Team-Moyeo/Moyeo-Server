@@ -395,6 +395,8 @@ public class MeetingServiceImpl implements MeetingService {
             }
         }
 
+        meeting.updateMeetingStatus(MeetingStatus.CONFIRM);
+
 
         return meetingMapper.toFixMeeting(meeting);
     }
