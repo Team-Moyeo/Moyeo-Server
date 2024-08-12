@@ -69,6 +69,10 @@ public class Meeting extends BaseEntity {
         this.fixedTimes = fixedTimes;
     }
 
+    public void updateMeetingStatus(MeetingStatus meetingStatus) {
+        this.meetingStatus = meetingStatus;
+    }
+
     public void increaseNumberOfPeople() {
         this.numberOfPeople += numberOfPeople;
     }
