@@ -27,4 +27,10 @@ public class PlaceController {
             @RequestBody PlaceRequest.PlaceCreate request) {
         return BaseResponse.onSuccess(placeService.createPlace(member, request.getTitle(), request.getAddress(), request.getLatitude(), request.getLongitude()));
     }
+
+    @Operation(summary = "장소 조회 API", description = "장소 조회 API 입니다.")
+    @GetMapping("/{placeId}")
+    public BaseResponse<PlaceResponse.PlaceGet> getPlace(@PathVariable Long placeId) {
+        return BaseResponse.onSuccess(placeService.getPlace(placeId));
+    }
 }
