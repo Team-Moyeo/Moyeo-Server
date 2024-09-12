@@ -32,6 +32,15 @@ public class PlaceMapper {
                 .build();
     }
 
+    public PlaceResponse.PlaceGet toPlaceGet(Place place) {
+        return PlaceResponse.PlaceGet.builder()
+                .title(place.getTitle())
+                .address(place.getAddress())
+                .longitude(place.getLongitude())
+                .latitude(place.getLatitude())
+                .build();
+    }
+
     public VotePlace toVotePlace(
             MemberMeeting memberMeeting,
             CandidatePlace candidatePlace

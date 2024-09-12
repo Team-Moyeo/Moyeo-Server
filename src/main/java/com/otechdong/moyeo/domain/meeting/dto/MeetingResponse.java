@@ -22,7 +22,6 @@ public class MeetingResponse {
         private Long meetingId;
     }
 
-
     @Getter
     @Builder
     @AllArgsConstructor
@@ -94,25 +93,11 @@ public class MeetingResponse {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MeetingGetDetailCandidatePlace {
-        private String title;
-        private String address;
-        private Double latitude;
-        private Double longitude;
-        private Integer voteCount;
-    }
-
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
     public static class MeetingVoteConfirm {
         private Long meetingId;
         private List<Long> votePlaceIds;
         private List<Long> voteTimeIds;
     }
-
 
     @Getter
     @Builder

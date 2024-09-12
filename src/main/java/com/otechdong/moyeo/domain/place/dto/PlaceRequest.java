@@ -18,4 +18,12 @@ public class PlaceRequest {
         private Double latitude;
         private Double longitude;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PlaceGet {
+        private Long placeId;
+    }
 }
